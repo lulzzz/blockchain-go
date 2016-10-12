@@ -1,25 +1,39 @@
-/*eslint-env node*/
-
 //------------------------------------------------------------------------------
-// node.js starter application for Bluemix
+/* Copyright 2016 IBM Corp. All Rights Reserved.
+ * Node.js server for Blockchain-Go Application
+ * first implementation by Vitor Diego
+*/
 //------------------------------------------------------------------------------
 
-// This application uses express as its web server
-// for more info, see: http://expressjs.com
-var express = require('express');
+'use strict'
 
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
-var cfenv = require('cfenv');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const appEnv = cfenv.getAppEnv();
+const logger = require('morgan');
+const config = require('./config/setup.js').startNetwork();
+const rest = require('./rest/blockchain.js');
 
-// create a new express server
-var app = express();
-
-// serve the files out of ./public as our main files
+app.use(logger('dev'));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
+
+app.get('/',function(req,res){
+  res.render("index.html");
+});
+
+app.post('/request',function(req,res){
+  console.log(`handling ${req.user}'s request`);
+  requestsListenner(rest.action(req),res);
+});
+
+function requestsListenner(req,res){
+  let response = req;
+  res.send(response);
+}
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, '0.0.0.0', function() {
