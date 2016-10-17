@@ -1,46 +1,73 @@
 //------------------------------------------------------------------------------
 /* Copyright 2016 IBM Corp. All Rights Reserved.
- * Main Configuration for Blockchain-Go Application
+ * blockchain instance setup using ibc-js sdk
  * first implementation by Vitor Diego
 */
 //------------------------------------------------------------------------------
-
 'use strict'
 
-const env = require('./env.json');
-const hfc = require('hfc');
-const ca = env.ca;
+//loads environment variables for blockchain setup (using blockchain-backup(service instance))
+const env = require('../env.json');
+console.log(`getting environment variables \n ${env.peers[0].discovery_host}`);
+const peers = env.peers;
+const users = env.users;
+const Ibc1 = require('ibm-blockchain-js');
+const ibc = new Ibc1();
+let chaincode = null;
 
-/*--peer-chaincodedev*/
-//get the addresses from the docker-compose environment
-var PEER_ADDRESS = env.peers[0]; //process.env.PEER_ADDRESS;
-var MEMBERSRVC_ADDRESS = ca.314fd819- dd27 - 4848 - 91d6- cccab58db6ff_ca;   //process.env.MEMBERSRVC_ADDRESS;
-var adminName = env.users[1].username;
-var adminSecret = env.users[1].secret;
-
-module.exports.startNetwork = function () {
-    return blockchainStart();
+// ==================================
+// configure ibc-js sdk
+// ==================================
+function configureIbcJs(){
+let options = 	{
+    network:{
+        peers: [peers[0]],
+        users: users,
+        options: {							//this is optional
+          quiet: true, 						//detailed debug messages on/off true/false
+          tls: true, 						//should app to peer communication use tls?
+          maxRetry: 1						//how many times should we retry register before giving up
+        }
+    },
+    chaincode:{
+        zip_url: 'https://github.com/VitorSousaCode/chaincodes/archive/master.zip',
+        unzip_dir: 'chaincodes-master/experimental',
+        git_url: 'https://github.com/VitorSousaCode/chaincodes/experimental'
+    }
+};
+//loads chaincode with options above
+ibc.load(options, cb_ready);
 }
 
-function blockchainStart() {
-    // Create a client chain.
-    // The name can be anything as it is only used internally.
-    var chain = hfc.newChain("targetChain");
-
-    // Configure the KeyValStore which is used to store sensitive keys
-    // as so it is important to secure this storage.
-    chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
-
-    // Set the URL for membership services
-    chain.setMemberServicesUrl("grpc://" + MEMBERSRVC_ADDRESS.url);
-
-    chain.addPeer("grpc://" + PEER_ADDRESS.api_url);
-
-    chain.enroll(adminName, adminSecret, function (err, webAppAdmin) {
-        if (err) return console.log("ERROR: failed to register %s: %s", err);
-        // Successfully enrolled WebAppAdmin during initialization.
-        // Set this user as the chain's registrar which is authorized to register other users.
-        chain.setRegistrar(webAppAdmin);
-        console.log(`Admin enrolled Successfully - ready for invocations`);
-    });
+/* function cb_ready(err,cc)
+ * @param {Object} err - error object for handling
+ * @param {Object} cc - chaincode object deployed Successfully */
+function cb_ready(err, cc){
+  if (err != null) {
+      console.log('! looks like an error loading the chaincode, app will fail\n', err);
+      if (!process.error) process.error = {type: 'load', msg: err.details};				//if it already exist, keep the last error
+  }
+  else{
+  chaincode = cc;
+    //decide if I need to deploy or not - fix
+    if(!cc.details.deployed_name || cc.details.deployed_name === ""){
+        cc.deploy('init', ['99'], {delay_ms: 5000},function(err,success){
+         if(err) return;
+        }); //{delay_ms: 60000}
+        console.log("deploying chaincode...");
+        //console.log(JSON.stringify(cc));
+    }
+    else{
+        console.log('chaincode summary file indicates chaincode has been previously deployed');        
+    }
+    //return chaincode;
+  }
 }
+
+module.exports.startNetwork = function(){
+    return configureIbcJs();
+};
+
+module.exports.chain = function(){
+    return chaincode;
+};
