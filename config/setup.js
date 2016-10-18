@@ -13,13 +13,13 @@ const peers = env.peers;
 const users = env.users;
 const Ibc1 = require('ibm-blockchain-js');
 const ibc = new Ibc1();
-let chaincode = null;
+var chaincode;
 
 // ==================================
 // configure ibc-js sdk
 // ==================================
 function configureIbcJs(){
-let options = 	{
+let options = {
     network:{
         peers: [peers[0]],
         users: users,
@@ -37,7 +37,6 @@ let options = 	{
 };
 //loads chaincode with options above
 ibc.load(options, cb_ready);
-}
 
 /* function cb_ready(err,cc)
  * @param {Object} err - error object for handling
@@ -59,15 +58,18 @@ function cb_ready(err, cc){
     }
     else{
         console.log('chaincode summary file indicates chaincode has been previously deployed');        
-    }
-    //return chaincode;
+    }    
+    //console.log("chaincode " + JSON.stringify(chaincode));
+    return chaincode;
   }
+ }
 }
+
+module.exports.chain = function(){
+    console.log(`chaincode ${chaincode}`);
+    return chaincode;
+};
 
 module.exports.startNetwork = function(){
     return configureIbcJs();
-};
-
-module.exports.chain = function(){
-    return chaincode;
-};
+}

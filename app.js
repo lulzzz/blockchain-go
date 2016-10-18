@@ -13,8 +13,8 @@ const app = express();
 const cfenv = require('cfenv');
 const appEnv = cfenv.getAppEnv();
 const logger = require('morgan');
-const promise = require('promise');
 const rest = require('./rest/blockchain.js');
+const start = require('./config/setup.js').startNetwork();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -26,20 +26,19 @@ app.get('/',function(req,res){
 });
 
 app.post('/request',function(req,res){
-  console.log(`handling ${req.user}'s request`);
-  if(req.body !== null && req.body !== undefined){
-  //let value = new promise(function(resolve,reject){
-    requestsListenner(rest.action(req),res);
-  //}).then();  
+  console.log(`handling ${req.body.user}'s request`);
+  if(req.body !== null && req.body !== undefined){  
+    rest.action(req.body,res);    
+    //requestsListenner(value,res);    
   }else{
     res.send('invalid request');
   }
 });
 
-function requestsListenner(req,res){
-  let response = req;
+/*function requestsListenner(req,res){
+  let response = req;  
   res.send(response);
-}
+}*/
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, '0.0.0.0', function() {

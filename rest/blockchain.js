@@ -7,17 +7,20 @@
 
 'use strict'
 
-const start = require('../config/setup.js').startNetwork();
-const chaincode = require('../config/setup.js').chain();
-console.log(`chaincode ${chaincode}`);
+const Promise = require('bluebird');
+let chaincode;
+let response = '';  
 
-module.exports.action = function(params){
-    return chainInteraction(params);
+module.exports.action = function(params,callback){
+    chaincode = require('../config/setup.js').chain();
+    return chainInteraction(params,callback);
 }
 
-function chainInteraction(request){
-  let response = '';
-  console.log(`request from user ${request.body}`);
+function chainInteraction(request,callback){  
+  
+  console.log(`request from user ${request.action}`);  
+
+  //return new Promise(function)
   if(request.action === 'create'){
       //invoke.init_asset
     chaincode.invoke.init_asset(
@@ -27,10 +30,9 @@ function chainInteraction(request){
          request.temperature,
          request.id],function(err,res){
       if(!err){
-        response = queryRead(request.description);
+        queryRead(request.description,callback);        
       }
-    });
-      
+    });      
   }else if(request.action === 'transfer'){
      //invoke.set_user
      chaincode.invoke.set_user(
@@ -38,21 +40,23 @@ function chainInteraction(request){
          request.user,
          request.temperature],function(err,res){
       if(!err){
-        response = queryRead(request.description);
+         queryRead(request.description,callback);
       }
     });
   }else if(request.action === 'read'){
       //chaincode.query
-      response = queryRead(request.description);
+       queryRead(request.description,callback);
   }else{
     response = 'function not listed';
   }
-  console.log(`response from ledger ${response}`);
-  return response;
 }
 
-function queryRead(description){
+function queryRead(description,callback){
   chaincode.query.read([description],function(err,res){
-    if(!err)return res;
+    if(!err)setTimeout(function(){
+        response = res;
+        console.log(`${response}`);
+        callback.send(response);
+    },2000);    
   });
 }
