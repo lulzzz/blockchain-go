@@ -6,3 +6,7 @@ html, body {
       #map {
         height: 100%;
       }
+
+#introBlockChain{
+  text-align: center;
+}
