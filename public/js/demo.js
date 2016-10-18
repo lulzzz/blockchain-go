@@ -30,3 +30,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsDisplay.setMap(map);
 }
+
+$(document).ready(function () {
+    $('#myModal').modal('show');
+});

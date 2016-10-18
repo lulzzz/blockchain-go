@@ -3,14 +3,39 @@
 
 <head>
 	<title>blockchain-go</title>
+	<meta name="viewport" content="initial-scale=1.0">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="stylesheets/style.css"></link>
 	<script type="text/javascript" src="js/demo.js"></script>
-	<meta name="viewport" content="initial-scale=1.0">
 	<meta charset="utf-8">
 </head>
 
 <body>
 	<div id="map"></div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><label id="modal-text">Blockchain Intro</label></h4>
+				</div>
+				<div class="modal-body">
+					<div id="introBlockChain"><span>
+            Our interactive demo tracks the shipment of a package as it moves<br> along the supply chain,
+            passing through multiple carriers.<br>It shows how an IoT-enabled package transmits required
+            status information<br> along the way and how each transaction is tracked and <br>shared among all
+            partners in a blockchain.
+            </span></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Start Demo</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhUy5nFzj_k1IGvnvmRfj5TzupE14NAvk&callback=initMap" async
 		defer></script>
 </body>
