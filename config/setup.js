@@ -6,7 +6,7 @@
 //------------------------------------------------------------------------------
 'use strict'
 
-//loads environment variables for blockchain setup (using blockchain-backup(service instance))
+//loads environment variables for blockchain setup (USA server - blockchain-go)
 const env = require('../env.json');
 console.log(`getting environment variables \n ${env.peers[0].discovery_host}`);
 const peers = env.peers;
@@ -21,7 +21,7 @@ var chaincode;
 function configureIbcJs() {
     let options = {
         network: {
-            peers: [peers[1]],
+            peers: [peers[0]],
             users: users,
             options: {							//this is optional
                 quiet: true, 						//detailed debug messages on/off true/false
@@ -35,8 +35,11 @@ function configureIbcJs() {
             git_url: 'https://github.com/VitorSousaCode/chaincodes/experimental'
         }
     };
+
+    //if the peer has stoped we can use: ibc.switchPeer(peers[x]);
     //loads chaincode with options above
     ibc.load(options, cb_ready);
+
 
     /* function cb_ready(err,cc)
      * @param {Object} err - error object for handling
