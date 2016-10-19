@@ -32,3 +32,13 @@ interested developers a sense of your cadence and upcoming enhancements.
 
 #fix zoom and delay on animations [];
 #put maps api into external file [];
+
+#References in blockchain learning files
+#Questions about consensus...
+-with bitcoin and anonymous parties we need to ensure security with a proof of work;
+-inside a permissioned network we can decrease significantly this coast(cause every player is known);
+-Googles routing codes(banking) example;
+-(benefits to supply chain process;
+-Letter of credit example(*);
+-What the key point between hyperledger x blockchain business;
+

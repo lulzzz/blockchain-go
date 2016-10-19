@@ -10,3 +10,23 @@ html, body {
 #introBlockChain{
   text-align: center;
 }
+
+body .modal-dialog {
+    width: 80%;   
+}
+
+body .modal-dialog img{
+   width: 80%; 
+   align-content: center;
+}
+
+.assetContainer{
+  position:absolute;
+  right:5%;
+  top:60%;
+  width:37%;
+  height:32%;
+  filter:alpha(opacity=50);
+  background-color: #000000;
+  z-index:2;
+}
