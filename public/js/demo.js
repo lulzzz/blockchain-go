@@ -52,6 +52,10 @@ $(document).ready(function () {
     $('#btnCreateAsset').click(function () {
         createAsset(data);
     });
+
+
+
+
 });
 
 //------------------//-------------------------//--------------------//
@@ -101,6 +105,8 @@ function initMap() {
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsDisplay.setMap(map);
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    setMarkers(map);
 }
 
 function setMarkers(map) {
@@ -136,7 +142,6 @@ function setMarkers(map) {
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     var waypts = [];
-    var image = 'images/eu.png';
 
     for (var i = 1; i < playerSet.length - 1; i++) {
         var position = { "lat": playerSet[i][1], "lng": playerSet[i][2] };
@@ -167,15 +172,18 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 /*UI events listenner*/
 function createAsset(init) {
     doTransaction(init);
-    console.log("createAsset " + JSON.stringify(init));
+    let assetContainerBody = $('.assetContainerBody');
     setTimeout(function () {
         if (data !== null && data !== undefined) {
+            console.log("createAsset " + JSON.stringify(init));
             //temporary way to append ui elements => update with react,etc;
-            $('#displayInfo').append('<h4>Asset created</h4><br>' +
+            assetContainerBody.append('<img src="./images/pallete.png"><br>' +
+                '<h4>Asset created</h4><br>' +
                 '<br><b>Owner: </b>' + data.user.toUpperCase() +
                 '<br><b>Description: </b>' + data.description +
                 '<br><b>Registered: </b>' + data.lastTransaction +
                 '<br><b>UUID: </b> ' + uuid + '\n');
+            assetContainerBody.fadeIn("slow");
         }
         else {
             return alert("error creating asset.please try again");
@@ -222,10 +230,8 @@ function stopTracking(tracking) {
 
 $("#btnUpTemp").click(function () {
     temperature++;
-
 });
 
 $("#btnDownTemp").click(function () {
     temperature--;
-
 });

@@ -16,6 +16,8 @@ eye-catching graphic.
 Finally, consider defining some sprints and work items in Track & Plan to give 
 interested developers a sense of your cadence and upcoming enhancements.
 
+
+#By Agostinho => "Why blockchain?","Why Hyperledger?","Why IBM?"
 #new features:
 
 #nodeJs server optimized [ok];
