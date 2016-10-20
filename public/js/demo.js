@@ -3,7 +3,6 @@ var map,
     marker,
     route,
     markers,
-    playTracking,
     currentPlayer,
     dataInfo,
     infowindow,
@@ -47,15 +46,12 @@ var playerSet = [
 $(document).ready(function () {
 
     $('#myModal').modal('show');
+    currentPlayer = markers[0];
 
     /*@{Object data} creates an asset triggering createAsset & doTransaction*/
     $('#btnCreateAsset').click(function () {
         createAsset(data);
     });
-
-
-
-
 });
 
 //------------------//-------------------------//--------------------//
@@ -75,9 +71,9 @@ function doTransaction(action) {
 }
 
 function checkStatus() {
+    statsEventListenner();
     if (heldAccountable || temperature > 24) {
         status = "Verify";
-        document.getElementById("shipmentStatus").style.color = "Red";
         verifyValue = temperature;
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
@@ -89,20 +85,61 @@ function checkStatus() {
     }
 }
 
+/*@{Function data} this function "animates" the icons through the route*/
+function playTracking() {
+    let count = 1, steps = 0;
+    //set of variables to hold current and next lat/long(comparision)
+    let currentLat = currentPlayer.getPosition().lat();
+    let nextLat = markers[count].getPosition().lat();
+    let currentLng = currentPlayer.getPosition().lng();
+    let nextLng = markers[count].getPosition().lng();
+
+    //update 
+    statsEventListenner();
+
+    //info balloon
+    dataInfo = currentPlayer.getTitle() + " is shipping assets";
+    infowindow = new google.maps.InfoWindow({
+        content: dataInfo
+    });
+
+    infowindow.open(map, currentPlayer);
+    let trigger = setInterval(this, 1000);
+
+    checkStatus();
+    currentPlayer.setPosition(route[steps + 10]);
+    if (currentLat - nextLat < 0.0000113522 && currentLng - nextLng < 0.0000113522) {
+        currentPlayer = markers[count];
+        data.user = currentPlayer.getTitle();
+        data.type = "transfer";
+        if (verifyValue !== "No") {
+            data.temperature = verifyValue
+        }
+        /**continuar da linha 225 */
+        doTransaction(data);
+
+        //delay to update all UI elements with the new state 
+        setTimeout(function () {
+
+        });
+    }
+
+}
+
 //--------------------------------------------//------------------------------------------------
 
 /*Drawing Map*/
 function initMap() {
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer({
-        // draggable: true,
+        draggable: true,
         suppressMarkers: true
     });
     var mapCenter = new google.maps.LatLng(defaultCoordinates[defaultCoordinates.length - 1].lat, defaultCoordinates[defaultCoordinates.length - 1].lng);
     var mapOptions = {
-        zoom: 15,
-        center: mapCenter
-    }
+        zoom: 5,
+        center: mapCenter,
+    };
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsDisplay.setMap(map);
     calculateAndDisplayRoute(directionsService, directionsDisplay);
@@ -113,8 +150,7 @@ function setMarkers(map) {
     let image, img;
     markers = [];
     for (var x = 0; x < playerSet.length; x++) {
-        //
-        var actors = playerSet[x];
+        let actors = playerSet[x];
         img = x + 1;
         image = 'images/player' + img + '.png';
         marker = new google.maps.Marker({
@@ -128,7 +164,7 @@ function setMarkers(map) {
         });
         markers.push(marker);
         marker.addListener('dragend', function () {
-            var player = this.getTitle();
+            let player = this.getTitle();
             for (var y in playerSet) {
                 if (playerSet[y][0] === player) {
                     playerSet[y][1] = this.getPosition().lat();
@@ -173,17 +209,25 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 function createAsset(init) {
     doTransaction(init);
     let assetContainerBody = $('.assetContainerBody');
+    let assetContainer = $('.assetContainer');
+    let btnCreate = $('.assetContainer button');
+    let btnStart = $('.assetContainerBody button');
     setTimeout(function () {
         if (data !== null && data !== undefined) {
             console.log("createAsset " + JSON.stringify(init));
             //temporary way to append ui elements => update with react,etc;
-            assetContainerBody.append('<img src="./images/pallete.png"><br>' +
-                '<h4>Asset created</h4><br>' +
+            assetContainerBody.append('<br><img src="./images/pallete.png"><br>' +
+                '<h4>Asset created</h4>' +
                 '<br><b>Owner: </b>' + data.user.toUpperCase() +
                 '<br><b>Description: </b>' + data.description +
                 '<br><b>Registered: </b>' + data.lastTransaction +
                 '<br><b>UUID: </b> ' + uuid + '\n');
+
+            assetContainer.addClass("extendContainer");
             assetContainerBody.fadeIn("slow");
+            btnCreate.fadeOut("slow");
+            btnStart.fadeIn("slow");
+            checkStatus();
         }
         else {
             return alert("error creating asset.please try again");
@@ -191,41 +235,15 @@ function createAsset(init) {
     }, 4000);
 }
 
-function blockchainEvents(assetDescription, playerID, assetID, lastTransaction, status) {
-    var i = 0;
-    $("#blockchainInfo").append('<h4>Blockchain info</h4>');
-    $("#blockchainInfo").append('<h5>Asset Description: <label id="block_user"> "' + assetDescription + '"</label></h5>');
-    $("#blockchainInfo").append('<h5>Serial number: <label id="block_user">"' + assetID + '"</label></h5>');
-    $("#blockchainInfo").append('<h5>Asset Owner: <label id="block_user">"' + playerID.toUpperCase() + '"</label></h5>');
-    $("#blockchainInfo").append('<h5>Last transaction: <label id="block_user">"' + lastTransaction + '"</label></h5><br>');
-    if (status !== "OK") {
-        $("#blockchainInfo").append('<h5>Need to be checked: <label id="block_user">"' + verifyValue + '"</label></h5>');
-        $("#blockchainInfo").append('<h5>Responsible Party: <label id="block_user">"' + verifyOwner + '"</label></h5>');
-    }
-    $("#blockchainInfo").fadeIn("slow");
-    if (i <= 1) {
-        setTimeout(function () {
-            $("#blockchainInfo").fadeOut("slow");
-            i++;
-        }, 10000);
-    }
-}
+/*@{Object data} - listenner to blockchain events*/
+function statsEventListenner() {
+    $("#lblTransaction").text("000");
+    $("#lblTemperature").text(data.temperature + + 'ºC');
+    $("#lblTime").text(data.lastTransaction);
+    $("#lblDescription").text(data.description);
+    $("#lblSerialNumber").text("=]");
+    $("#lblOwner").text(data.user);
 
-function stopTracking(tracking) {
-    $('#introBlockChain').empty();
-    $('.modal-footer').empty();
-    $('#displayInfo').empty();
-    $('#displayInfo').append('<h3>Shipment Final Status</h3>' +
-        '<b>Asset Description:</b> ' + data.description +
-        '<br><b>Serial number:</b> ' + data.id +
-        '<br><b>Last transaction: </b>' + data.lastTransaction +
-        '<br><b>UUID: </b> ' + uuid +
-        '<br><b>Delivered to Customer:</b> Yes</h4>' +
-        '<br><b>Temperature to Verify:</b> ' + verifyValue +
-        '<br><b>Responsible Party:</b> ' + verifyOwner +
-        '<br><b>Number of transactions:</b> 3');
-    $('#myModal').modal('show');
-    clearInterval(tracking);
 }
 
 $("#btnUpTemp").click(function () {

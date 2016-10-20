@@ -24,18 +24,70 @@ body .modal-dialog img{
    display: none;
 }
 
+.assetContainerBody button{
+   position: absolute;
+   top:90%;
+   left:0.5%;
+   z-index:2;
+}
+
+.smartContract{
+  border-radius: 8px;
+  align-items: center;  
+}
+
+.smartContract span{ 
+  border-radius: 4px;
+  color: #ffffff; 
+  font-size:120%;
+}
+
 .assetContainer{  
   width: 30%;
-  height: 78%;
+  height: 30%;
   position: absolute;
   right: 0;
-  top: 55px;
+  top: 45px;
   color: #7E90A0;
   background: #222832;
   align-items: center;
   padding: 30px 0;
-  border-left: 25px orange solid;
+  border-left: 25px #222832 solid;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  text-align: center;    
+  text-align: center;   
+}
+
+.blockchainInfo{
+  width: 20%;
+  height: 25%;
+  position: absolute;
+  left: 2%;
+  top:20%;
+  color: #7E90A0;
+  background: #222832;
+  align-items: center;
+  padding: 30px 0;
+  border-right: 25px #222832 solid;
+  border-left: 25px #222832 solid;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;  
+  border-bottom-left-radius: 10px;  
+  text-align:center;
+}
+
+.assetContainer button{
+  top:70%;
+}
+
+.extendContainer{
+  height: 65%;
+  transition-duration: 1.5;  
+}
+
+.stats{
+  font:30%;
+  text-decoration: darkorange;
+  align-self: center;
 }

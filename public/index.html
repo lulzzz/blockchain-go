@@ -16,10 +16,29 @@
 	<div id="map"></div>
 	<!-- asset container div-->
 	<div class="assetContainer">
-		<button id="btnCreateAsset" value="create" class="btn btn-sucess"></button>
-		<div class="assetContainerBody">
+		<div class="smartContract">
+			<h3><label>Smart Contract</label></h3>
+			<span>If the temperature exceeds 24ºC,<br>the package must be inspected.
+                      The party responsible <br>for the package at the time of the temperature
+                      increase <br>is held accountable for all losses.</span>
 		</div>
+		<div class="assetContainerBody">
+			<button type="button" id="startDemo" class="btn btn-success">Play Tracking</button>
+		</div>
+		<br><br>
+		<button id="btnCreateAsset" class="btn btn-sucess">create asset</button>
 	</div>
+	<!-- Status Monitoring-->
+	<div class="blockchainInfo">
+		<h4>Status Monitor</h4>
+		<label id="lblDescription" class=".stats"></label><br>
+		<label id="lblSerialNumber" class=".stats"></label><br>
+		<label id="lblOwner" class=".stats"></label><br>
+		<label id="lblTransaction" class=".stats"></label><br>
+		<label id="lblTemperature" class=".stats"></label><br>
+		<label id="lblTime" class=".stats"></label><br>
+	</div>
+
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
