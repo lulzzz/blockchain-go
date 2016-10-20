@@ -63,7 +63,7 @@ let reading = function queryRead(description, callback) {
       }
       console.log(`blockchain.js ${response}`);
       callback.send(response);
-    }, 2000);
+    }, 3000);
   });
 }
 

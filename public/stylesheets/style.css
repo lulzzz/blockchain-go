@@ -28,5 +28,5 @@ body .modal-dialog img{
   height:32%;
   filter:alpha(opacity=50);
   background-color: #000000;
-  z-index:2;
+  z-index:2;    
 }
