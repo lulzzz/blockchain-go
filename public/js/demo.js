@@ -98,46 +98,64 @@ function setupTracking() {
     infowindow = new google.maps.InfoWindow({
         content: dataInfo
     });
-    trigger = setInterval(playTracking, 1000);
+
+    trigger = setInterval(function () {
+        playTracking(data)
+    }, 1000);
+
+    //ensuring it has valid objects
+    markers.forEach(function (icon) {
+        console.log(`marker ${icon.getTitle()}`);
+    });
 }
 
 /*@{Function data} this function "animates" the icons through the route*/
-function playTracking() {
+function playTracking(values) {
 
+    let package = JSON.parse(values); //fix error VM311
     //set of variables to hold current and next lat/long(comparision)
     let currentLat = currentPlayer.getPosition().lat();
     let nextLat = markers[count].getPosition().lat();
     let currentLng = currentPlayer.getPosition().lng();
     let nextLng = markers[count].getPosition().lng();
 
-    //update stats infowindow
-    statsEventListenner();
-
-    infowindow.open(map, currentPlayer);
-
+    //update stats window
     checkStatus();
-    currentPlayer.setPosition(route[steps + 10]);
-    console.log(`steps ${steps}`);
+    currentPlayer.setPosition(route[steps + 15]);
+    //console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000113522 && currentLng - nextLng < 0.0000113522) {
         console.log(`count ${count}`);
         currentPlayer = markers[count];
-        data.user = currentPlayer.getTitle();
-        data.type = "transfer";
+        package.user = currentPlayer.getTitle();
+        package.action = "transfer";
         if (verifyValue !== "No") {
-            data.temperature = verifyValue
+            package.temperature = verifyValue
         }
-        /**continuar da linha 225 */
-        doTransaction(data);
+
+        //current package's owner
+        console.log(`${package.user}`);
+
+        //request to server
+        doTransaction(package);
 
         //delay to update all UI elements with the new state 
         setTimeout(function () {
             $('#currentPlayer').html(currentPlayer.getTitle());
-            infowindow.setContent(`${data.user} is shipping assets`);
+            infowindow.setContent(package.user + " is shipping assets");
             infowindow.open(map, currentPlayer);
             count++;
+            if (count === 3) {
+                stopTracking(trigger);
+                infowindow.setContent("Order finished");
+            }
         }, 500);
     }
     steps++;
+}
+
+/*@{Object data} - stops playTracking()*/
+function stopTracking(interval$) {
+    clearInterval(interval$);
 }
 
 //--------------------------------------------//------------------------------------------------
