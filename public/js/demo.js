@@ -3,6 +3,7 @@ var map,
     marker,
     route,
     markers,
+    trigger,
     currentPlayer,
     dataInfo,
     infowindow,
@@ -11,6 +12,7 @@ var map,
     verifyOwner = "No",
     temperature = "21",
     heldAccountable = false,
+    count = 1, steps = 0,
     status = 'OK',
     rand = Math.floor((Math.random() * 8000) + 1),
     pack = "Asset Package " + rand,
@@ -46,11 +48,15 @@ var playerSet = [
 $(document).ready(function () {
 
     $('#myModal').modal('show');
-    currentPlayer = markers[0];
 
     /*@{Object data} creates an asset triggering createAsset & doTransaction*/
     $('#btnCreateAsset').click(function () {
+        currentPlayer = markers[0];
         createAsset(data);
+    });
+
+    $('#startDemo').click(function () {
+        setupTracking();
     });
 });
 
@@ -85,30 +91,35 @@ function checkStatus() {
     }
 }
 
+/*@{Function data} - starting animation(executes once - calls playTracking() => interval)*/
+function setupTracking() {
+    //info balloon notification
+    dataInfo = currentPlayer.getTitle() + " is shipping assets";
+    infowindow = new google.maps.InfoWindow({
+        content: dataInfo
+    });
+    trigger = setInterval(playTracking, 1000);
+}
+
 /*@{Function data} this function "animates" the icons through the route*/
 function playTracking() {
-    let count = 1, steps = 0;
+
     //set of variables to hold current and next lat/long(comparision)
     let currentLat = currentPlayer.getPosition().lat();
     let nextLat = markers[count].getPosition().lat();
     let currentLng = currentPlayer.getPosition().lng();
     let nextLng = markers[count].getPosition().lng();
 
-    //update 
+    //update stats infowindow
     statsEventListenner();
 
-    //info balloon
-    dataInfo = currentPlayer.getTitle() + " is shipping assets";
-    infowindow = new google.maps.InfoWindow({
-        content: dataInfo
-    });
-
     infowindow.open(map, currentPlayer);
-    let trigger = setInterval(this, 1000);
 
     checkStatus();
     currentPlayer.setPosition(route[steps + 10]);
+    console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000113522 && currentLng - nextLng < 0.0000113522) {
+        console.log(`count ${count}`);
         currentPlayer = markers[count];
         data.user = currentPlayer.getTitle();
         data.type = "transfer";
@@ -120,10 +131,13 @@ function playTracking() {
 
         //delay to update all UI elements with the new state 
         setTimeout(function () {
-
-        });
+            $('#currentPlayer').html(currentPlayer.getTitle());
+            infowindow.setContent(`${data.user} is shipping assets`);
+            infowindow.open(map, currentPlayer);
+            count++;
+        }, 500);
     }
-
+    steps++;
 }
 
 //--------------------------------------------//------------------------------------------------
