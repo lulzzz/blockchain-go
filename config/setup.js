@@ -21,7 +21,7 @@ var chaincode;
 function configureIbcJs() {
     let options = {
         network: {
-            peers: [peers[1]],
+            peers: [peers[0]],
             users: users,
             options: {							//this is optional
                 quiet: true, 						//detailed debug messages on/off true/false

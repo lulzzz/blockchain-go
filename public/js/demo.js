@@ -66,7 +66,7 @@ $(document).ready(function () {
 function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
-        console.log("doTransaction " + JSON.stringify(data));
+        console.log(` doTransaction ${data.user}`);
         if (data.status === true) {
             heldAccountable = true;
             checkStatus();
@@ -112,7 +112,7 @@ function setupTracking() {
 /*@{Function data} this function "animates" the icons through the route*/
 function playTracking(values) {
 
-    let package = JSON.parse(values); //fix error VM311
+    let package = values; //fix error VM311
     //set of variables to hold current and next lat/long(comparision)
     let currentLat = currentPlayer.getPosition().lat();
     let nextLat = markers[count].getPosition().lat();
@@ -133,7 +133,7 @@ function playTracking(values) {
         }
 
         //current package's owner
-        console.log(`${package.user}`);
+        console.log(`interval ${package.user}`);
 
         //request to server
         doTransaction(package);
@@ -145,7 +145,11 @@ function playTracking(values) {
             infowindow.open(map, currentPlayer);
             count++;
             if (count === 3) {
+                package.user = currentPlayer.getTitle();
+                package.action = "transfer";
+                doTransaction(package);
                 stopTracking(trigger);
+                checkStatus();
                 infowindow.setContent("Order finished");
             }
         }, 500);
@@ -246,7 +250,6 @@ function createAsset(init) {
     let btnStart = $('.assetContainerBody button');
     setTimeout(function () {
         if (data !== null && data !== undefined) {
-            console.log("createAsset " + JSON.stringify(init));
             //temporary way to append ui elements => update with react,etc;
             assetContainerBody.append('<br><img src="./images/pallete.png"><br>' +
                 '<h4>Asset created</h4>' +

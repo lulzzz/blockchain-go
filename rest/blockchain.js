@@ -53,16 +53,16 @@ function chainInteraction(request, callback) {
 }
 
 let reading = function queryRead(description, callback) {
-  chaincode.query.read([description], function (err, res) {
-    if (!err) setTimeout(function () {
-      response = res;
+  setTimeout(function () {
+    chaincode.query.read([description], function (err, res) {
+      if (!err) response = res;
       if (response === undefined) {
         console.log(`invoking recursive resource`);
         reading(description, callback);
         return;
       }
       console.log(`blockchain.js ${response}`);
-      callback.send(response);
+      callback.send(JSON.parse(response));
     }, 3000);
   });
 }
