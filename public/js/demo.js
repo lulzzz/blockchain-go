@@ -66,18 +66,19 @@ $(document).ready(function () {
 function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
-        console.log(` doTransaction ${data.user}`);
+        console.log(`doTransaction ${data.user}`);
         if (data.status === true) {
             heldAccountable = true;
-            checkStatus();
+            checkStatus(data);
         }
     }).fail(function onError(error) {
         console.log(`error requesting ${error}`);
     });
 }
 
-function checkStatus() {
-    statsEventListenner();
+function checkStatus(context) {
+    console.log(`checkStatus ${context.user}`);
+    statsEventListenner(context);
     if (heldAccountable || temperature > 24) {
         status = "Verify";
         verifyValue = temperature;
@@ -120,7 +121,7 @@ function playTracking(values) {
     let nextLng = markers[count].getPosition().lng();
 
     //update stats window
-    checkStatus();
+    checkStatus(package);
     currentPlayer.setPosition(route[steps + 15]);
     //console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000113522 && currentLng - nextLng < 0.0000113522) {
@@ -149,7 +150,7 @@ function playTracking(values) {
                 package.action = "transfer";
                 doTransaction(package);
                 stopTracking(trigger);
-                checkStatus();
+                checkStatus(package);
                 infowindow.setContent("Order finished");
             }
         }, 500);
@@ -262,7 +263,7 @@ function createAsset(init) {
             assetContainerBody.fadeIn("slow");
             btnCreate.fadeOut("slow");
             btnStart.fadeIn("slow");
-            checkStatus();
+            checkStatus(init);
         }
         else {
             return alert("error creating asset.please try again");
@@ -271,13 +272,13 @@ function createAsset(init) {
 }
 
 /*@{Object data} - listenner to blockchain events*/
-function statsEventListenner() {
+function statsEventListenner(context) {
     $("#lblTransaction").text("000");
-    $("#lblTemperature").text(data.temperature + + 'ºC');
-    $("#lblTime").text(data.lastTransaction);
-    $("#lblDescription").text(data.description);
+    $("#lblTemperature").text(context.temperature + 'ºC');
+    $("#lblTime").text(context.lastTransaction);
+    $("#lblDescription").text(context.description);
     $("#lblSerialNumber").text("=]");
-    $("#lblOwner").text(data.user);
+    $("#lblOwner").text(context.user);
 
 }
 
