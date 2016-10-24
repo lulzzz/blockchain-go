@@ -53,6 +53,7 @@ $(document).ready(function () {
     $('#btnCreateAsset').click(function () {
         currentPlayer = markers[0];
         createAsset(data);
+        startStats();
     });
 
     $('#startDemo').click(function () {

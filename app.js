@@ -15,7 +15,7 @@ const appEnv = cfenv.getAppEnv();
 const logger = require('morgan');
 const rest = require('./rest/blockchain.js');
 const start = require('./config/setup.js').startNetwork();
-let ibc;
+let ibc, chainData = {};
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -36,6 +36,20 @@ app.post('/request', function (req, res) {
     res.send('invalid request');
   }
 });
+
+/*Enabling blockchain monitor*/
+setTimeout(function () {
+  ibc = require('./config/setup.js').monitor;
+
+  ibc.stats.monitor_blockheight(function (chain) {
+    chainData.blocks = chain;
+    console.log(`new blocks! ${chainData.blocks.height}`);
+
+    ibc.stats.block_stats(chain.height - 1, function (e, stats) {
+      console.log(`new stats! ${stats.nonHashData.transactionResults.uuid}`);
+    });
+  });
+}, 30000);
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, '0.0.0.0', function () {
