@@ -1,20 +1,17 @@
 /*creating animated blocks for monitor*/
 let block = 0;
-
+var trigger2;
 
 //Events listenner
 function startStats() {
     console.log("getting stats " + status);
-    let trigger = setInterval(function () {
-        getStats();
-    }, 3000);
 }
 
-function getStats() {
+function getStats(stats) {
+    let space = 32;
     block = block + 1;
     $(".animationDiv").append("<div id='box" + block + "' class='block'>values</div>");
-    //$("#box" + block_id).animate({ left: move + 'px' });    
-    $('.block:last').animate({ opacity: 1, left: (block * 36) }, 600, function () {
+    $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
         $('.lastblock').removeClass('lastblock');
         $('.block:last').addClass('lastblock');
     });
