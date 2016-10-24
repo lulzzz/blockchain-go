@@ -13,11 +13,11 @@ var map,
     temperature = "21",
     heldAccountable = false,
     count = 1, steps = 0,
-    status = 'OK',
+    status = 'Satisfied',
     rand = Math.floor((Math.random() * 8000) + 1),
     pack = "Asset Package " + rand,
-    transactionDate = new Date().toLocaleString(),
-    data = { description: pack, user: "IBM", action: "create", "temperature": temperature, lastTransaction: transactionDate };
+    now = new Date().toLocaleString(),
+    data = { description: pack, user: "IBM", action: "create", "temperature": temperature, lastTransaction: now };
 
 
 var defaultCoordinates = [{
@@ -77,7 +77,7 @@ function doTransaction(action) {
 }
 
 function checkStatus(context) {
-    console.log(`checkStatus ${context.user}`);
+    console.log(`checkStatus ${context.status}`);
     statsEventListenner(context);
     if (heldAccountable || temperature > 24) {
         status = "Verify";
@@ -273,13 +273,15 @@ function createAsset(init) {
 
 /*@{Object data} - listenner to blockchain events*/
 function statsEventListenner(context) {
-    $("#lblTransaction").text("000");
-    $("#lblTemperature").text(context.temperature + 'ºC');
-    $("#lblTime").text(context.lastTransaction);
-    $("#lblDescription").text(context.description);
-    $("#lblSerialNumber").text("=]");
-    $("#lblOwner").text(context.user);
-
+    let currenTime = new Date().toLocaleString();
+    $("#lblTransaction").text(`Transaction ID:`);
+    $("#lblTemperature").text(`Temperature: ${context.temperature} ºC`);
+    $("#lblTime").text(`Time now: ${currenTime}`);
+    $("#lastTransactionTime").text(`Last transaction: ${context.lastTransaction}`);
+    $("#lblDescription").text(`${context.description}`);
+    $("#lblSerialNumber").text(`SN:`);
+    $("#lblOwner").text(`Current owner: ${context.user}`);
+    $("#lblStatus").text(`Contract status: ${status}`);
 }
 
 $("#btnUpTemp").click(function () {

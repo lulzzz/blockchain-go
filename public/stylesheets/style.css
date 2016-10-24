@@ -59,8 +59,8 @@ body .modal-dialog img{
 }
 
 .blockchainInfo{
-  width: 20%;
-  height: 25%;
+  width: 25%;
+  height: 40%;
   position: absolute;
   left: 2%;
   top:20%;
@@ -82,7 +82,7 @@ body .modal-dialog img{
 }
 
 .extendContainer{
-  height: 65%;
+  height: 80%;
   transition-duration: 1.5;  
 }
 
