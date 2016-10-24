@@ -47,7 +47,13 @@ setTimeout(function () {
 
     ibc.stats.block_stats(chain.height - 1, function (e, stats) {
       console.log(`new stats! ${stats.nonHashData.transactionResults.uuid}`);
+      chainData.stats = stats;
     });
+  });
+
+  app.get('/chainfo', function (req, res) {
+    //console.log(JSON.stringify(chainData));
+    res.send(chainData);
   });
 }, 30000);
 
