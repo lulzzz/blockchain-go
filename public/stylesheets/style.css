@@ -91,3 +91,29 @@ body .modal-dialog img{
   color: darkorange;
   align-self: center;
 }
+
+#showPackage :hover{
+ cursor: pointer;
+}
+
+.alert{
+ align-self: center; 
+ font-size: 130%;
+ color:red;
+}
+
+.animationDiv{
+  position: absolute;
+  width: 70%;
+  background: #222832;
+  height: 15%;
+  bottom: 1%;
+  left:15%;
+  align-self: center;
+  border-right: 25px #222832 solid;
+  border-left: 25px #222832 solid;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;  
+  border-bottom-left-radius: 10px;  
+}

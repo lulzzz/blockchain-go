@@ -10,7 +10,7 @@ var map,
     humidity,
     verifyValue = "No",
     verifyOwner = "No",
-    temperature = "25",
+    temperature = "21",
     heldAccountable = false,
     count = 1, steps = 0,
     status = 'Satisfied',
@@ -83,6 +83,9 @@ function checkStatus(context) {
     statsEventListenner(context);
     if (heldAccountable || temperature > 24) {
         status = "Verify Package! " + currentPlayer.getTitle() + "";
+        let alertMsg = "<label class='alert'> " + context.user + " violated contract! </label>";
+        infowindow.setContent(alertMsg);
+        infowindow.open(map, currentPlayer);
         verifyValue = temperature;
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
@@ -102,6 +105,7 @@ function setupTracking() {
         content: dataInfo
     });
 
+    infowindow.open(map, currentPlayer);
     trigger = setInterval(function () {
         playTracking(data)
     }, 1000);
