@@ -27,7 +27,8 @@ interested developers a sense of your cadence and upcoming enhancements.
       (1).open modal-div(fade-in) explaining the context => Industry (ledger's data)-> Shipping Company (ledger's data)-> Final Customer(ledger's data);
       (2).Explain the Smart Contract => show map,players and create an asset(right div) -> start demo;
       (3).switch animation flow to 45s;
-      (4).final summary;
+      (4).enable Smart Contract over IoT real device && fake device
+      (5).final summary;
 }(appends) => IoT control enabled / fake temperature (+ -)
            => sla implementations(deadlines,etc)
            => final summary with multiple infractors;

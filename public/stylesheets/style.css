@@ -60,11 +60,11 @@ body .modal-dialog img{
 
 .blockchainInfo{
   width: 25%;
-  height: 40%;
+  height: 50%;
   position: absolute;
   left: 2%;
-  top:20%;
-  color: #7E90A0;
+  top:10%;
+  color: #7E90A0; 
   background: #222832;
   align-items: center;
   padding: 30px 0;
@@ -88,6 +88,6 @@ body .modal-dialog img{
 
 .stats{
   font:30%;
-  text-decoration: darkorange;
+  color: darkorange;
   align-self: center;
 }

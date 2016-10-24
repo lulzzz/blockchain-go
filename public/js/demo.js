@@ -10,7 +10,7 @@ var map,
     humidity,
     verifyValue = "No",
     verifyOwner = "No",
-    temperature = "21",
+    temperature = "25",
     heldAccountable = false,
     count = 1, steps = 0,
     status = 'Satisfied',
@@ -56,7 +56,9 @@ $(document).ready(function () {
     });
 
     $('#startDemo').click(function () {
+        $(".assetContainer").fadeOut("slow");
         setupTracking();
+        seePackage();
     });
 });
 
@@ -80,7 +82,7 @@ function checkStatus(context) {
     console.log(`checkStatus ${context.status}`);
     statsEventListenner(context);
     if (heldAccountable || temperature > 24) {
-        status = "Verify";
+        status = "Verify Package! " + currentPlayer.getTitle() + "";
         verifyValue = temperature;
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
@@ -271,17 +273,27 @@ function createAsset(init) {
     }, 4000);
 }
 
+function seePackage() {
+    $("#showPackage").mouseover(function () {
+        $(".assetContainer").fadeIn("slow");
+    });
+
+    $("#showPackage").mouseout(function () {
+        $(".assetContainer").fadeOut("slow");
+    });
+}
+
 /*@{Object data} - listenner to blockchain events*/
 function statsEventListenner(context) {
     let currenTime = new Date().toLocaleString();
-    $("#lblTransaction").text(`Transaction ID:`);
-    $("#lblTemperature").text(`Temperature: ${context.temperature} ºC`);
-    $("#lblTime").text(`Time now: ${currenTime}`);
-    $("#lastTransactionTime").text(`Last transaction: ${context.lastTransaction}`);
+    $("#lblTransaction").text(`!$()`);
+    $("#lblTemperature").text(`${context.temperature} ºC`);
+    $("#lblTime").text(`${currenTime}`);
+    $("#lastTransactionTime").text(`${context.lastTransaction}`);
     $("#lblDescription").text(`${context.description}`);
-    $("#lblSerialNumber").text(`SN:`);
-    $("#lblOwner").text(`Current owner: ${context.user}`);
-    $("#lblStatus").text(`Contract status: ${status}`);
+    $("#lblSerialNumber").text(`$()`);
+    $("#lblOwner").text(`${context.user}`);
+    $("#lblStatus").text(`${status}`);
 }
 
 $("#btnUpTemp").click(function () {
