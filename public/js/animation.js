@@ -2,6 +2,14 @@
 let block = 0;
 let space = 32;
 
+$(document).on('mouseover', '.block', function (event) {
+    show_details(event, Number($(this).html()));
+});
+
+function show_details(event, id) {
+    console.log("building details div");
+}
+
 function getStats() {
     $.get('/chainfo', function (data) {
         block = block + 1;

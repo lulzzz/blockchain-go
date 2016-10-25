@@ -118,6 +118,18 @@ body .modal-dialog img{
   border-bottom-left-radius: 10px;  
 }
 
+#details {
+  background: #222832;
+  color: #646B73;
+  display: none;
+  position: relative;
+  top: 40px;
+  width: 400px;
+  border-radius: 10px;
+  padding: 15px 30px;
+  word-break: break-all;
+  font-size: 12px; }
+
 .block {
   line-height: 30px;
   color: #2EB9D6;
