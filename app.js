@@ -43,13 +43,17 @@ setTimeout(function () {
 
   ibc.stats.monitor_blockheight(function (chain) {
     chainData.blocks = chain;
-    console.log("chain:\n" + JSON.stringify(chain));
+    console.log("monitor_blockheight:\n" + chain.currentBlockHash);
     //console.log(`new blocks! ${chainData.blocks.height}`);
 
     ibc.stats.block_stats(chain.height - 1, function (e, stats) {
       //console.log(`new stats! ${stats}`);
-      console.log("stats: \n" + JSON.stringify(stats));
+      console.log("block_stats: \n" + stats.transactions[0].uuid);
       chainData.stats = stats;
+
+      ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
+        console.log("get_transaction \n" + data.signature);
+      });
     });
   });
 

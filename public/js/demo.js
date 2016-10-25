@@ -70,6 +70,7 @@ function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
         console.log(`doTransaction ${data.user}`);
+        getStats();
         if (data.status === true) {
             heldAccountable = true;
             checkStatus(data);
