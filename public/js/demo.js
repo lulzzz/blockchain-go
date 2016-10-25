@@ -131,7 +131,7 @@ function playTracking(values) {
     checkStatus(package);
     currentPlayer.setPosition(route[steps + 15]);
     //console.log(`steps ${steps}`);
-    if (currentLat - nextLat < 0.0000113522 && currentLng - nextLng < 0.0000113522) {
+    if (currentLat - nextLat < 0.0000013522 && currentLng - nextLng < 0.0000013522) {
         console.log(`count ${count}`);
         currentPlayer = markers[count];
         package.user = currentPlayer.getTitle();

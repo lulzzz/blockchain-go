@@ -36,6 +36,7 @@ function configureIbcJs() {
         }
     };
 
+    ibc.network(peers, { quiet: false, timeout: 120000 });
     //if the peer has stoped we can use: ibc.switchPeer(peers[x]);
     //loads chaincode with options above
     ibc.load(options, cb_ready);

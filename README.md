@@ -21,8 +21,8 @@ interested developers a sense of your cadence and upcoming enhancements.
 #new features:
 
 #nodeJs server optimized [ok];
-#demo.js using react.js (fixing great dom manipulation)[ ];
-#easy frontend information about transactions(owners,assets,block_height,etc)[ ];
+#demo.js using react.js (fixing great dom manipulation)[failed];
+#easy frontend information about transactions(owners,assets,block_height,etc)[ ];   
 { steps: 
       (1).open modal-div(fade-in) explaining the context => Industry (ledger's data)-> Shipping Company (ledger's data)-> Final Customer(ledger's data);
       (2).Explain the Smart Contract => show map,players and create an asset(right div) -> start demo;
@@ -45,3 +45,8 @@ interested developers a sense of your cadence and upcoming enhancements.
 -Letter of credit example(*);
 -What the key point between hyperledger x blockchain business;
 
+Vitor, isso é ótimo pq faz parte dos nossos objetivos de Checkpoint para 4Q.
+
+Peço que na demo fique mais didático o que se passa na Blockchain em termos da 
+criação do documento inicial, as modificações causadas pelo Chaincode, as modificações 
+causadas no próprio Blockchain pelo Chaincode e, se possível, o processo de Consensus.
