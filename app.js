@@ -15,7 +15,7 @@ const appEnv = cfenv.getAppEnv();
 const logger = require('morgan');
 const rest = require('./rest/blockchain.js');
 const start = require('./config/setup.js').startNetwork();
-let ibc, chainData = {};
+let ibc, chaincode = {}, deployed = false, chainData = {};
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -37,31 +37,51 @@ app.post('/request', function (req, res) {
   }
 });
 
-/*Enabling blockchain monitor*/
+/*Fetching blockchain data*/
 setTimeout(function () {
   ibc = require('./config/setup.js').monitor;
 
   ibc.stats.monitor_blockheight(function (chain) {
-    chainData.blocks = chain;
-    console.log("monitor_blockheight:\n" + chain.currentBlockHash);
-    //console.log(`new blocks! ${chainData.blocks.height}`);
+    console.log(`new blocks! ${chain.currentBlockHash}`);
+    chainData.currentBlockHash = chain.currentBlockHash;
+    chainData.height = chain.height;
 
     ibc.stats.block_stats(chain.height - 1, function (e, stats) {
-      //console.log(`new stats! ${stats}`);
-      console.log("block_stats: \n" + stats.transactions[0].uuid);
-      chainData.stats = stats;
+      console.log(`block_stats: \n ${stats.transactions[0].uuid}`);
+      chainData.uuid = stats.transactions[0].uuid;
+      chainData.consensusMetadata = stats.consensusMetadata;
 
       ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
-        console.log("get_transaction \n" + data.signature);
+        if (!deployed) {
+          console.log(`first block:deploy(cc) \n  ${data.type}`);
+          deploymentBlock(chain, stats, data);
+          deployed = true;
+        }
+        console.log(`get_transaction \n  ${data.signature}`);
+        chainData.type = data.type;
+        chainData.created = data.timestamp.seconds;
       });
     });
   });
+
+  function deploymentBlock(chain, stats, data) {
+    chaincode.currentBlockHash = chain.currentBlockHash;
+    chaincode.height = chain.height;
+    chaincode.uuid = stats.transactions[0].uuid;
+    chaincode.consensusMetadata = stats.consensusMetadata;
+    chaincode.type = data.type;
+    chaincode.created = data.timestamp.seconds;
+  }
 
   app.get('/chainfo', function (req, res) {
     //console.log(JSON.stringify(chainData));
     res.send(chainData);
   });
 }, 30000);
+
+app.get('/deployed', function (req, res) {
+  res.send(chaincode);
+});
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, '0.0.0.0', function () {

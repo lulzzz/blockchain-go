@@ -4,6 +4,7 @@ var map,
     route,
     markers,
     trigger,
+    trigger$,
     currentPlayer,
     dataInfo,
     infowindow,
@@ -53,7 +54,7 @@ $(document).ready(function () {
     $('#btnCreateAsset').click(function () {
         currentPlayer = markers[0];
         createAsset(data);
-        startStats();
+        getDeploymentBlock();
     });
 
     $('#startDemo').click(function () {
@@ -112,6 +113,9 @@ function setupTracking() {
         playTracking(data)
     }, 1000);
 
+    trigger$ = setInterval(function () {
+        sendBlocks(data);
+    }, 15000)
     //ensuring it has valid objects
     markers.forEach(function (icon) {
         console.log(`marker ${icon.getTitle()}`);
@@ -157,7 +161,7 @@ function playTracking(values) {
                 package.user = currentPlayer.getTitle();
                 package.action = "transfer";
                 doTransaction(package);
-                stopTracking(trigger);
+                stopTracking(trigger, trigger$);
                 checkStatus(package);
                 infowindow.setContent("Order finished");
             }
@@ -167,8 +171,9 @@ function playTracking(values) {
 }
 
 /*@{Object data} - stops playTracking()*/
-function stopTracking(interval$) {
+function stopTracking(interval, interval$) {
     clearInterval(interval$);
+    clearInterval(interval);
 }
 
 //--------------------------------------------//------------------------------------------------
