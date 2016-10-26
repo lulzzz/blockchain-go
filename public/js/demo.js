@@ -5,6 +5,7 @@ var map,
     markers,
     trigger,
     trigger$,
+    mqttClient,
     currentPlayer,
     dataInfo,
     infowindow,
@@ -12,6 +13,7 @@ var map,
     verifyValue = "No",
     verifyOwner = "No",
     temperature = "21",
+    payloadHistory = {},
     heldAccountable = false,
     count = 1, steps = 0,
     status = 'Satisfied',
@@ -70,6 +72,7 @@ $(document).ready(function () {
 function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
+        dataHistory.push(data);
         console.log(`doTransaction ${data.user}`);
         getStats();
         if (data.status === true) {
@@ -302,7 +305,6 @@ function statsEventListenner(context) {
     $("#lblTime").text(`${currenTime}`);
     $("#lastTransactionTime").text(`${context.lastTransaction}`);
     $("#lblDescription").text(`${context.description}`);
-    $("#lblSerialNumber").text(`$()`);
     $("#lblOwner").text(`${context.user}`);
     $("#lblStatus").text(`${status}`);
 }

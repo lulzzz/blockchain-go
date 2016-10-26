@@ -21,7 +21,7 @@ var chaincode;
 function configureIbcJs() {
     let options = {
         network: {
-            peers: [peers[0]],
+            peers: [peers[1]],
             users: users,
             options: {							//this is optional
                 quiet: true, 						//detailed debug messages on/off true/false
@@ -40,7 +40,6 @@ function configureIbcJs() {
     //if the peer has stoped we can use: ibc.switchPeer(peers[x]);
     //loads chaincode with options above
     ibc.load(options, cb_ready);
-
 
     /* function cb_ready(err,cc)
      * @param {Object} err - error object for handling

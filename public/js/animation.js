@@ -38,6 +38,9 @@ function getDeploymentBlock() {
 }
 
 $(document).on('mouseover', '.block', function (event) {
+    payloadHistory.forEach(function (dataHistory) {
+        //same logic of blocksArray.forEach but,to payloadHistory
+    });
     show_details(event, Number($(this).html()));
 });
 
@@ -45,17 +48,23 @@ $(document).on('mouseleave', '.block', function () {
     $('#details').fadeOut();
 });
 
-
+//Missing payload info
 function show_details(event, id) {
-    console.log(event + " || " + id);
-    var left = event.pageX - $('#details').parent().offset().left - 100;
+    let currentBlock;
+    blocksArray.forEach(function (current) {
+        if (current.height === id) {
+            currentBlock = current;
+            console.log(currentBlock.height + " || " + id);
+        }
+    });
+    var left = event.pageX - $('#details').parent().offset().left - 120;
     if (left < 0) left = 0;
-    var html = '<p class="blckLegend"> Block Height: ' + blocksArray[id].height + '</p>';
-    html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(blocksArray[id].created * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';
-    html += '<p> UUID: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocksArray[id].uuid + '</p>';
-    html += '<p> Type:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocksArray[id].type + '</p>';
-    html += '<p> consensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + blocksArray[id].consensusMetadata + '</p>';
-    html += '<p> Payload:  &nbsp;</p>';
+    var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
+    html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';
+    html += '<p> UUID: ' + currentBlock.uuid + '</p>';
+    html += '<p> Type: &nbsp;&nbsp;' + currentBlock.type + '</p>';
+    html += '<p> consensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
+    html += '<p> Payload:  &nbsp;' + JSON.stringify(data) + '</p>';
     $('#details').html(html).css('left', left).fadeIn();
 }
 
