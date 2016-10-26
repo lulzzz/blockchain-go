@@ -115,7 +115,7 @@ function setupTracking() {
 
     trigger$ = setInterval(function () {
         sendBlocks(data);
-    }, 15000)
+    }, 13000)
     //ensuring it has valid objects
     markers.forEach(function (icon) {
         console.log(`marker ${icon.getTitle()}`);

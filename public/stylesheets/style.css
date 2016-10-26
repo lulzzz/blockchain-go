@@ -123,8 +123,8 @@ body .modal-dialog img{
   color: #646B73;
   display: none;
   position: relative;
-  top: 40px;
-  width: 400px;
+  top: -400%;
+  width: 200px;
   border-radius: 10px;
   padding: 15px 30px;
   word-break: break-all;
