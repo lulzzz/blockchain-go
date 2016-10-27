@@ -1,20 +1,31 @@
 /*creating animated blocks for monitor*/
 let block = 0;
-let space = 32;
+let space = 32, currentPayload;
 let blocksArray = [];
 
 function getStats() {
     $.get('/chainfo', function (data) {
-        blocksArray.push(data);
-        console.log("data.height: " + data.height + "array \n" + JSON.stringify(blocksArray));
-        block = block + 1;
-        $(".animationDiv").append("<div id='box" + block + "' class='block'>" + data.height + "</div>");
-        $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
-            $('.lastblock').removeClass('lastblock');
-            $('.block:last').addClass('lastblock');
+        let found = false;
+        blocksArray.forEach(function (seekAndDestroy) {
+            if (seekAndDestroy.height === data.height) {
+                console.log(`block allready exists ${data.height}`);
+                found = true;
+                return;
+            }
         });
-        console.log(JSON.stringify(data) + typeof (data));
-        block++;
+        if (!found) {
+            blocksArray.push(data);
+            payloadHistory[payloadHistory.length - 1].height = data.height;
+            console.log("data.height: " + data.height + "last \n" + JSON.stringify(payloadHistory[payloadHistory.length - 1].height));
+            block = block + 1;
+            $(".animationDiv").append("<div id='box" + block + "' class='block'>" + data.height + "</div>");
+            $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
+                $('.lastblock').removeClass('lastblock');
+                $('.block:last').addClass('lastblock');
+            });
+            //console.log(JSON.stringify(data) + typeof (data));
+            block++;
+        }
     });
 }
 
@@ -27,6 +38,7 @@ function sendBlocks(payload) {
 
 function getDeploymentBlock() {
     $.get('/deployed', function (deployed) {
+        blocksArray.push(deployed);
         block = block + 1;
         $(".animationDiv").append("<div id='firstBlockBox'class='block'>" + deployed.height + "</div>");
         $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
@@ -37,11 +49,16 @@ function getDeploymentBlock() {
     });
 }
 
+//terminar
 $(document).on('mouseover', '.block', function (event) {
+    let height = Number($(this).html());
     payloadHistory.forEach(function (dataHistory) {
-        //same logic of blocksArray.forEach but,to payloadHistory
+        console.log("dataHistory " + JSON.stringify(dataHistory));
+        if (dataHistory.height === height) {
+            currentPayload = dataHistory;
+        }
     });
-    show_details(event, Number($(this).html()));
+    show_details(event, height, currentPayload);
 });
 
 $(document).on('mouseleave', '.block', function () {
@@ -49,12 +66,12 @@ $(document).on('mouseleave', '.block', function () {
 });
 
 //Missing payload info
-function show_details(event, id) {
+function show_details(event, id, message) {
     let currentBlock;
     blocksArray.forEach(function (current) {
         if (current.height === id) {
             currentBlock = current;
-            console.log(currentBlock.height + " || " + id);
+            console.log(currentBlock.height + " || " + id + " || " + message.height);
         }
     });
     var left = event.pageX - $('#details').parent().offset().left - 120;
@@ -64,7 +81,7 @@ function show_details(event, id) {
     html += '<p> UUID: ' + currentBlock.uuid + '</p>';
     html += '<p> Type: &nbsp;&nbsp;' + currentBlock.type + '</p>';
     html += '<p> consensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
-    html += '<p> Payload:  &nbsp;' + JSON.stringify(data) + '</p>';
+    html += '<p> Payload:  &nbsp;' + JSON.stringify(message) + '</p>';
     $('#details').html(html).css('left', left).fadeIn();
 }
 

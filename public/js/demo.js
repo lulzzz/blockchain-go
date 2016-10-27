@@ -13,7 +13,7 @@ var map,
     verifyValue = "No",
     verifyOwner = "No",
     temperature = "21",
-    payloadHistory = {},
+    payloadHistory = [],
     heldAccountable = false,
     count = 1, steps = 0,
     status = 'Satisfied',
@@ -72,9 +72,9 @@ $(document).ready(function () {
 function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
-        dataHistory.push(data);
-        console.log(`doTransaction ${data.user}`);
-        getStats();
+        payloadHistory.push(data);
+        //console.log("do Transaction " + JSON.stringify(payloadHistory));
+        getStats(payloadHistory);
         if (data.status === true) {
             heldAccountable = true;
             checkStatus(data);

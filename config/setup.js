@@ -7,7 +7,7 @@
 'use strict'
 
 //loads environment variables for blockchain setup (USA server - blockchain-go)
-const env = require('../env.json');
+const env = require('../env.json'); //env.json(for usa servers)
 console.log(`getting environment variables \n ${env.peers[0].discovery_host}`);
 const peers = env.peers;
 const users = env.users;
@@ -21,8 +21,8 @@ var chaincode;
 function configureIbcJs() {
     let options = {
         network: {
-            peers: [peers[1]],
-            users: users,
+            peers: [peers[0]], //2
+            users: users, //3 [users[1]]
             options: {							//this is optional
                 quiet: true, 						//detailed debug messages on/off true/false
                 tls: true, 						//should app to peer communication use tls?
