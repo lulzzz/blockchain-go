@@ -8,16 +8,18 @@ html, body {
       }
 
 #introBlockChain{
-  text-align: center;
+  text-align: center;  
 }
 
 body .modal-dialog {
-    width: 80%;   
+    width: 80%;
+    align-content: center;   
 }
 
 body .modal-dialog img{
    width: 80%; 
-   align-content: center;
+   position: relative;
+   left:10%;
 }
 
 .assetContainerBody{

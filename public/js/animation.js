@@ -33,7 +33,7 @@ function sendBlocks(payload) {
     payload.user = currentPlayer.getTitle();
     payload.action = "transfer";
     doTransaction(payload);
-    console.log("sendBlocks: " + JSON.stringify(payload));
+    //console.log("sendBlocks: " + JSON.stringify(payload));
 }
 
 function getDeploymentBlock() {
@@ -49,11 +49,11 @@ function getDeploymentBlock() {
     });
 }
 
-//terminar
+
 $(document).on('mouseover', '.block', function (event) {
     let height = Number($(this).html());
     payloadHistory.forEach(function (dataHistory) {
-        console.log("dataHistory " + JSON.stringify(dataHistory));
+        //console.log("dataHistory " + JSON.stringify(dataHistory));
         if (dataHistory.height === height) {
             currentPayload = dataHistory;
         }
@@ -71,7 +71,7 @@ function show_details(event, id, message) {
     blocksArray.forEach(function (current) {
         if (current.height === id) {
             currentBlock = current;
-            console.log(currentBlock.height + " || " + id + " || " + message.height);
+            //console.log(currentBlock.height + " || " + id + " || " + message.height);
         }
     });
     var left = event.pageX - $('#details').parent().offset().left - 120;

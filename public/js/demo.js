@@ -10,9 +10,9 @@ var map,
     dataInfo,
     infowindow,
     humidity,
-    verifyValue = "No",
+    verifyValue = 0,
     verifyOwner = "No",
-    temperature = "21",
+    temperature = 21,
     payloadHistory = [],
     heldAccountable = false,
     count = 1, steps = 0,
@@ -20,7 +20,7 @@ var map,
     rand = Math.floor((Math.random() * 8000) + 1),
     pack = "Asset Package " + rand,
     now = new Date().toLocaleString(),
-    data = { description: pack, user: "IBM", action: "create", "temperature": temperature, lastTransaction: now };
+    data = { description: pack, user: "Industry", action: "create", "temperature": temperature, lastTransaction: now };
 
 
 var defaultCoordinates = [{
@@ -64,6 +64,20 @@ $(document).ready(function () {
         setupTracking();
         seePackage();
     });
+
+    $("#btnUpTemp").click(function () {
+        temperature++;
+        data.temperature = temperature;
+        $("#lblTemperature").text(`${temperature} ºC`);
+        console.log(data.temperature);
+    });
+
+    $("#btnDownTemp").click(function () {
+        temperature--;
+        data.temperature = temperature;
+        $("#lblTemperature").text(`${temperature} ºC`);
+        console.log(data.temperature);
+    });
 });
 
 //------------------//-------------------------//--------------------//
@@ -75,7 +89,8 @@ function doTransaction(action) {
         payloadHistory.push(data);
         //console.log("do Transaction " + JSON.stringify(payloadHistory));
         getStats(payloadHistory);
-        if (data.status === true) {
+        if (data.status === true && data.user === currentPlayer.getTitle()) {
+            console.log(`${currentPlayer.getTitle()} and ${data.user} are equal`);
             heldAccountable = true;
             checkStatus(data);
         }
@@ -85,7 +100,7 @@ function doTransaction(action) {
 }
 
 function checkStatus(context) {
-    console.log(`checkStatus ${context.status}`);
+    //console.log(`checkStatus ${context.status}`);
     statsEventListenner(context);
     if (heldAccountable || temperature > 24) {
         status = "Verify Package! " + currentPlayer.getTitle() + "";
@@ -93,12 +108,14 @@ function checkStatus(context) {
         infowindow.setContent(alertMsg);
         infowindow.open(map, currentPlayer);
         verifyValue = temperature;
+        console.log(`verifyValue: (checkStatus) ${verifyValue}`);
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
                 verifyOwner = playerSet[i][0];
             }
         }
     } else {
+        verifyValue = 0;
         heldAccountable = false;
     }
 }
@@ -134,7 +151,11 @@ function playTracking(values) {
     let nextLat = markers[count].getPosition().lat();
     let currentLng = currentPlayer.getPosition().lng();
     let nextLng = markers[count].getPosition().lng();
-
+    if (verifyValue > 0) {
+        package.temperature = verifyValue
+        console.log(`Verifying value ${verifyValue} || ${verifyOwner} heldAccountable ${heldAccountable}`);
+    }
+    console.log(`heldAccountable ${heldAccountable}`);
     //update stats window
     checkStatus(package);
     currentPlayer.setPosition(route[steps + 15]);
@@ -144,9 +165,6 @@ function playTracking(values) {
         currentPlayer = markers[count];
         package.user = currentPlayer.getTitle();
         package.action = "transfer";
-        if (verifyValue !== "No") {
-            package.temperature = verifyValue
-        }
 
         //current package's owner
         console.log(`interval ${package.user}`);
@@ -265,6 +283,7 @@ function createAsset(init) {
     let assetContainer = $('.assetContainer');
     let btnCreate = $('.assetContainer button');
     let btnStart = $('.assetContainerBody button');
+
     setTimeout(function () {
         if (data !== null && data !== undefined) {
             //temporary way to append ui elements => update with react,etc;
@@ -300,7 +319,6 @@ function seePackage() {
 /*@{Object data} - listenner to blockchain events*/
 function statsEventListenner(context) {
     let currenTime = new Date().toLocaleString();
-    $("#lblTransaction").text(`!$()`);
     $("#lblTemperature").text(`${context.temperature} ºC`);
     $("#lblTime").text(`${currenTime}`);
     $("#lastTransactionTime").text(`${context.lastTransaction}`);
@@ -308,11 +326,3 @@ function statsEventListenner(context) {
     $("#lblOwner").text(`${context.user}`);
     $("#lblStatus").text(`${status}`);
 }
-
-$("#btnUpTemp").click(function () {
-    temperature++;
-});
-
-$("#btnDownTemp").click(function () {
-    temperature--;
-});

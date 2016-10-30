@@ -37,7 +37,8 @@ function onConnectionLost(responseObject) {
 function onMessageArrived(message) {
     payload = JSON.parse(message.payloadString);
     payload.timestamp = new Date().getTime();
-    data.temperature = Number((payload.t - 273).toFixed(2));
+    temperature = Number((payload.t - 273).toFixed(2));
     console.log(`connected ${message.payloadString}`);
-    //checkStatus();
+    //validating contract
+
 }

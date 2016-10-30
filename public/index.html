@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/style.css"></link>
 	<script type="text/javascript" src="js/demo.js"></script>
 	<script type="text/javascript" src="js/animation.js"></script>
-	<script type="text/javascript" src="js/mqttClient.js"></script>
+	<!--<script type="text/javascript" src="js/mqttClient.js"></script>-->
 	<meta charset="utf-8">
 </head>
 
@@ -36,12 +36,13 @@
 		<h4>Status Monitor</h4>
 		<label id="lblDescription" class="stats"></label><br>
 		<label>Current owner: <label id="lblOwner" class="stats"></label></label><br>
-		<label>Transaction ID: <label id="lblTransaction" class="stats"></label></label><br>
-		<label>Temperature: <label id="lblTemperature" class="stats"></label></label><br>
 		<label>Time now: <label id="lblTime" class="stats"></label></label><br>
 		<label>Last transaction: <label id="lastTransactionTime" class="stats"></label></label><br>
-		<label>Contract status: <label id="lblStatus" class="stats"></label></label><br><br>
-		<label id="showPackage">See package</label>
+		<label>Contract status: <label id="lblStatus" class="stats"></label></label><br>
+		<label>Temperature: <label id="lblTemperature" class="stats"></label>
+		<button type="button" id="btnDownTemp" class="btn temp btn-warning">-</button>
+		<button type="button" id="btnUpTemp" class="btn temp btn-warning">+</button></label><br>
+		<label id="showPackage">See contract</label>
 	</div>
 	<!-- Blocks animation -->
 	<div class="animationDiv">
@@ -59,12 +60,12 @@
 				</div>
 				<div class="modal-body">
 					<div><img src="./images/blockchain.png"></div>
-					<div id="introBlockChain"><span>
+					<div id="introBlockChain"><label>
             Our interactive demo tracks the shipment of a package as it moves<br> along the supply chain,
             passing through multiple carriers.<br>It shows how an IoT-enabled package transmits required
             status information<br> along the way and how each transaction is tracked and <br>shared among all
             partners in a blockchain.
-            </span></div>
+            </label></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Start Demo</button>
