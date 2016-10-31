@@ -71,7 +71,9 @@ function show_details(event, id, message) {
     blocksArray.forEach(function (current) {
         if (current.height === id) {
             currentBlock = current;
-            //console.log(currentBlock.height + " || " + id + " || " + message.height);
+            console.log(currentBlock.height + " || " + id + " || " + message.height);
+        } if (id !== message.height) {
+            message = { "deployment": "first block!", "created": message.lastTransaction }
         }
     });
     var left = event.pageX - $('#details').parent().offset().left - 120;
@@ -79,9 +81,9 @@ function show_details(event, id, message) {
     var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
     html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';
     html += '<p> UUID: ' + currentBlock.uuid + '</p>';
-    html += '<p> Type: &nbsp;&nbsp;' + currentBlock.type + '</p>';
-    html += '<p> consensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
-    html += '<p> Payload:  &nbsp;' + JSON.stringify(message) + '</p>';
+    //html += '<p> Type: &nbsp;&nbsp;' + message.type + '</p>';
+    html += '<p> ConsensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
+    html += '<p> Payload:' + JSON.stringify(message) + '</p>';
     $('#details').html(html).css('left', left).fadeIn();
 }
 

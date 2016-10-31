@@ -10,7 +10,7 @@ var map,
     dataInfo,
     infowindow,
     humidity,
-    verifyValue = 0,
+    verifyValue,
     verifyOwner = "No",
     temperature = 21,
     payloadHistory = [],
@@ -55,14 +55,15 @@ $(document).ready(function () {
     /*@{Object data} creates an asset triggering createAsset & doTransaction*/
     $('#btnCreateAsset').click(function () {
         currentPlayer = markers[0];
-        createAsset(data);
         getDeploymentBlock();
+        createAsset(data);
     });
 
     $('#startDemo').click(function () {
         $(".assetContainer").fadeOut("slow");
         setupTracking();
         seePackage();
+        $(this).fadeOut();
     });
 
     $("#btnUpTemp").click(function () {
@@ -86,13 +87,18 @@ $(document).ready(function () {
 function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
+        if (data.temperature > 24) {
+            data.status = true;
+        }
         payloadHistory.push(data);
-        //console.log("do Transaction " + JSON.stringify(payloadHistory));
         getStats(payloadHistory);
         if (data.status === true && data.user === currentPlayer.getTitle()) {
-            console.log(`${currentPlayer.getTitle()} and ${data.user} are equal`);
+            console.log(`${currentPlayer.getTitle()} = ${data.user}`);
             heldAccountable = true;
             checkStatus(data);
+        } else {
+            heldAccountable = false;
+            data.status === false;
         }
     }).fail(function onError(error) {
         console.log(`error requesting ${error}`);
@@ -108,15 +114,18 @@ function checkStatus(context) {
         infowindow.setContent(alertMsg);
         infowindow.open(map, currentPlayer);
         verifyValue = temperature;
+        data.status === false;
         console.log(`verifyValue: (checkStatus) ${verifyValue}`);
+        console.log(`status: (false?) ${data.status}`);
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
                 verifyOwner = playerSet[i][0];
             }
         }
     } else {
-        verifyValue = 0;
+        verifyValue = undefined;
         heldAccountable = false;
+        data.status = false;
     }
 }
 
@@ -135,7 +144,7 @@ function setupTracking() {
 
     trigger$ = setInterval(function () {
         sendBlocks(data);
-    }, 13000)
+    }, 9000)
     //ensuring it has valid objects
     markers.forEach(function (icon) {
         console.log(`marker ${icon.getTitle()}`);
@@ -151,11 +160,12 @@ function playTracking(values) {
     let nextLat = markers[count].getPosition().lat();
     let currentLng = currentPlayer.getPosition().lng();
     let nextLng = markers[count].getPosition().lng();
-    if (verifyValue > 0) {
+    if (verifyValue !== undefined) {
         package.temperature = verifyValue
-        console.log(`Verifying value ${verifyValue} || ${verifyOwner} heldAccountable ${heldAccountable}`);
+        console.log(`Verifying value ${verifyValue} || infractors?: ${verifyOwner} heldAccountable ${heldAccountable}`);
     }
     console.log(`heldAccountable ${heldAccountable}`);
+    console.log(`status now  ${data.status}`);
     //update stats window
     checkStatus(package);
     currentPlayer.setPosition(route[steps + 15]);
@@ -208,8 +218,9 @@ function initMap() {
     });
     var mapCenter = new google.maps.LatLng(defaultCoordinates[defaultCoordinates.length - 1].lat, defaultCoordinates[defaultCoordinates.length - 1].lng);
     var mapOptions = {
-        zoom: 5,
+        zoom: 12,
         center: mapCenter,
+        mapTypeId: google.maps.MapTypeId.HYBRID
     };
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsDisplay.setMap(map);
@@ -291,8 +302,8 @@ function createAsset(init) {
                 '<h4>Asset created</h4>' +
                 '<br><b>Owner: </b>' + data.user.toUpperCase() +
                 '<br><b>Description: </b>' + data.description +
-                '<br><b>Registered: </b>' + data.lastTransaction +
-                '<br><b>UUID: </b> ' + uuid + '\n');
+                '<br><b>Registered: </b>' + data.lastTransaction);
+            // '<br><b>UUID: </b> ' + data.uuid + '\n');
 
             assetContainer.addClass("extendContainer");
             assetContainerBody.fadeIn("slow");
@@ -319,10 +330,11 @@ function seePackage() {
 /*@{Object data} - listenner to blockchain events*/
 function statsEventListenner(context) {
     let currenTime = new Date().toLocaleString();
-    $("#lblTemperature").text(`${context.temperature} ºC`);
+    console.log(`temp changing: ${context.temperature}`);
+    $("#lblTemperature").text(`${temperature} ºC`);
     $("#lblTime").text(`${currenTime}`);
     $("#lastTransactionTime").text(`${context.lastTransaction}`);
     $("#lblDescription").text(`${context.description}`);
-    $("#lblOwner").text(`${context.user}`);
+    $("#lblOwner").text(`${currentPlayer.getTitle()}`);
     $("#lblStatus").text(`${status}`);
 }
