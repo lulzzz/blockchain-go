@@ -15,13 +15,18 @@ function getStats() {
         });
         if (!found) {
             blocksArray.push(data);
-            payloadHistory[payloadHistory.length - 1].height = data.height;
+            let appendToHistory = payloadHistory[payloadHistory.length - 1];
+            appendToHistory.height = data.height;
             console.log("data.height: " + data.height + "last \n" + JSON.stringify(payloadHistory[payloadHistory.length - 1].height));
             block = block + 1;
             $(".animationDiv").append("<div id='box" + block + "' class='block'>" + data.height + "</div>");
             $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
                 $('.lastblock').removeClass('lastblock');
-                $('.block:last').addClass('lastblock');
+                if (appendToHistory.status === true && appendToHistory.temperature > 24) {
+                    $('.block:last').addClass('alertBlock');
+                } else {
+                    $('.block:last').addClass('lastblock');
+                }
             });
             //console.log(JSON.stringify(data) + typeof (data));
             block++;

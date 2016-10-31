@@ -22,7 +22,8 @@ interested developers a sense of your cadence and upcoming enhancements.
 
 #nodeJs server optimized [ok];
 #demo.js using react.js (fixing great dom manipulation)[failed];
-#easy frontend information about transactions(owners,assets,block_height,etc)[ ];   
+#easy frontend information about transactions(owners,assets,block_height,etc)[ok];
+#alignment from stats data and blocks(frontend),summary status(final) and MqttClient[ ];  
 { steps: 
       (1).open modal-div(fade-in) explaining the context => Industry (ledger's data)-> Shipping Company (ledger's data)-> Final Customer(ledger's data);
       (2).Explain the Smart Contract => show map,players and create an asset(right div) -> start demo;

@@ -46,7 +46,7 @@ body .modal-dialog img{
 
 .assetContainer{  
   width: 30%;
-  height: 30%;
+  height: 35%;
   position: absolute;
   right: 0;
   top: 45px;
@@ -58,6 +58,11 @@ body .modal-dialog img{
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   text-align: center;   
+}
+
+.loadAsset{
+  width: 25%;
+  visibility: hidden;
 }
 
 .blockchainInfo{
@@ -155,8 +160,8 @@ body .modal-dialog img{
 
 .alertBlock {
   transition: background-color 1s ease;
-  background: #2EB9D6;
-  color: #222832;
+  background: #222832;
+  color:darkorange;
   border-color: red;
   }
 

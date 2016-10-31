@@ -54,6 +54,8 @@ $(document).ready(function () {
 
     /*@{Object data} creates an asset triggering createAsset & doTransaction*/
     $('#btnCreateAsset').click(function () {
+        $(this).fadeOut();
+        $("#loadAsset").fadeIn();
         currentPlayer = markers[0];
         getDeploymentBlock();
         createAsset(data);
@@ -292,11 +294,11 @@ function createAsset(init) {
     doTransaction(init);
     let assetContainerBody = $('.assetContainerBody');
     let assetContainer = $('.assetContainer');
-    let btnCreate = $('.assetContainer button');
     let btnStart = $('.assetContainerBody button');
 
     setTimeout(function () {
         if (data !== null && data !== undefined) {
+            $("#loadAsset").fadeOut("slow");
             //temporary way to append ui elements => update with react,etc;
             assetContainerBody.append('<br><img src="./images/pallete.png"><br>' +
                 '<h4>Asset created</h4>' +
@@ -307,14 +309,13 @@ function createAsset(init) {
 
             assetContainer.addClass("extendContainer");
             assetContainerBody.fadeIn("slow");
-            btnCreate.fadeOut("slow");
             btnStart.fadeIn("slow");
             checkStatus(init);
         }
         else {
             return alert("error creating asset.please try again");
         }
-    }, 4000);
+    }, 3000);
 }
 
 function seePackage() {
