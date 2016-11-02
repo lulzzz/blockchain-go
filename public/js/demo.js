@@ -53,9 +53,7 @@ $(document).ready(function () {
     $('#myModal').modal('show');
 
     /*@{Object data} creates an asset triggering createAsset & doTransaction*/
-    $('#btnCreateAsset').click(function () {
-        $(this).fadeOut();
-        $("#loadAsset").fadeIn();
+    $('.btn-primary').click(function () {
         currentPlayer = markers[0];
         getDeploymentBlock();
         createAsset(data);
@@ -136,7 +134,8 @@ function setupTracking() {
     //info balloon notification
     dataInfo = currentPlayer.getTitle() + " is shipping assets";
     infowindow = new google.maps.InfoWindow({
-        content: dataInfo
+        content: dataInfo,
+        maxWidth: 100
     });
 
     infowindow.open(map, currentPlayer);
@@ -218,13 +217,16 @@ function initMap() {
         draggable: true,
         suppressMarkers: true
     });
+
     var mapCenter = new google.maps.LatLng(defaultCoordinates[defaultCoordinates.length - 1].lat, defaultCoordinates[defaultCoordinates.length - 1].lng);
     var mapOptions = {
-        zoom: 12,
         center: mapCenter,
+        zoom: 15,
         mapTypeId: google.maps.MapTypeId.HYBRID
     };
+
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
     directionsDisplay.setMap(map);
     calculateAndDisplayRoute(directionsService, directionsDisplay);
     setMarkers(map);
@@ -279,26 +281,43 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         travelMode: google.maps.TravelMode.DRIVING
     }, function (data, status) {
         if (status === google.maps.DirectionsStatus.OK) {
-
+            //preserveViewport: true => solved the zoom issue
+            directionsDisplay.setOptions({ preserveViewport: true });
             directionsDisplay.setDirections(data);
             route = data.routes[0].overview_path;
 
         }
     });
+    //map.setZoom(2);
+    //console.log(`maps zoom: ${map.getZoom()}`);
 }
 
 /*--------------//-----------------------------------//---------------------*/
 
 /*UI events listenner*/
+
+function onLoadAsset() {
+    $('.modal-content').empty();
+    $('.modal-content').append('<div id="gearsLoad"><img src="./images/gears.gif"><h4>Creating Asset...</h4></div>');
+    $(".loading").fadeIn();
+}
+
 function createAsset(init) {
+    onLoadAsset();
     doTransaction(init);
     let assetContainerBody = $('.assetContainerBody');
+    let animationDiv = $('.animationDiv');
+    let blockchainInfoDiv = $('.blockchainInfo');
     let assetContainer = $('.assetContainer');
     let btnStart = $('.assetContainerBody button');
 
     setTimeout(function () {
         if (data !== null && data !== undefined) {
-            $("#loadAsset").fadeOut("slow");
+
+            $('.modal-backdrop').fadeOut();
+            $('.modal-dialog').fadeOut("slow");
+            $('#myModal').fadeOut("slow");
+
             //temporary way to append ui elements => update with react,etc;
             assetContainerBody.append('<br><img src="./images/pallete.png"><br>' +
                 '<h4>Asset created</h4>' +
@@ -307,6 +326,9 @@ function createAsset(init) {
                 '<br><b>Registered: </b>' + data.lastTransaction);
             // '<br><b>UUID: </b> ' + data.uuid + '\n');
 
+            blockchainInfoDiv.fadeIn("slow");
+            animationDiv.fadeIn("slow");
+            assetContainer.fadeIn("slow");
             assetContainer.addClass("extendContainer");
             assetContainerBody.fadeIn("slow");
             btnStart.fadeIn("slow");

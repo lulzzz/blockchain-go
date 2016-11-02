@@ -73,6 +73,7 @@ $(document).on('mouseleave', '.block', function () {
 //Missing payload info
 function show_details(event, id, message) {
     let currentBlock;
+    var left;
     blocksArray.forEach(function (current) {
         if (current.height === id) {
             currentBlock = current;
@@ -81,7 +82,11 @@ function show_details(event, id, message) {
             message = { "deployment": "first block!", "created": message.lastTransaction }
         }
     });
-    var left = event.pageX - $('#details').parent().offset().left - 120;
+    if (message.temperature > 24) {
+        left = event.pageX - $('#alertDetails').parent().offset().left - 120;
+    } else {
+        left = event.pageX - $('#details').parent().offset().left - 120;
+    }
     if (left < 0) left = 0;
     var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
     html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';

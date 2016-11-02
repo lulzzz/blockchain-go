@@ -1,50 +1,65 @@
 html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100%;
-      }
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-#introBlockChain{
-  text-align: center;  
+#map {
+  height: 100%;
+}
+
+#introBlockChain {
+  text-align: center;
 }
 
 body .modal-dialog {
-    width: 80%;
-    align-content: center;   
+  width: 80%;
+  align-content: center;
 }
 
-body .modal-dialog img{
-   width: 80%; 
-   position: relative;
-   left:10%;
+body .modal-dialog img {
+  width: 80%;
+  position: relative;
+  left: 10%;
 }
 
-.assetContainerBody{
-   display: none;
+.assetContainerBody {
+  display: none;
 }
 
-.assetContainerBody button{
-   position: absolute;
-   top:90%;
-   left:0.5%;
-   z-index:2;
+.assetContainerBody button {
+  position: absolute;
+  top: 90%;
+  left: 0.5%;
+  z-index: 2;
 }
 
-.smartContract{
+.smartContract {
   border-radius: 8px;
-  align-items: center;  
+  align-items: center;
 }
 
-.smartContract span{ 
+.smartContract span {
   border-radius: 4px;
-  color: #ffffff; 
-  font-size:120%;
+  color: #ffffff;
+  font-size: 120%;
 }
 
-.assetContainer{  
+#gearsLoad {
+  position: absolute;
+  left: 45%;
+  width: 20%;
+  height: 15%;
+  color: darkorange;
+  border-right: 25px #222832 solid;
+  border-left: 25px #222832 solid;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.assetContainer {
   width: 30%;
   height: 35%;
   position: absolute;
@@ -57,37 +72,35 @@ body .modal-dialog img{
   border-left: 25px #222832 solid;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  text-align: center;   
+  text-align: center;
 }
 
-.loadAsset{
+.loadAsset {
   width: 25%;
-  visibility: hidden;
 }
 
-.btn-primary{
+.btn-primary {
   right: 2%;
   bottom: 2%;
   position: absolute;
 }
 
 #myModal {
-  width:80%;
-  top:10%;
+  width: 80%;
+  top: 10%;
   position: absolute;
   left: 10%;
 }
 
-
-.blockchainInfo{
+.blockchainInfo {
   width: 25%;
   min-width: 15%;
   max-width: 35%;
   height: 40%;
   position: absolute;
   left: 2%;
-  top:10%;
-  color: #7E90A0; 
+  top: 10%;
+  color: #7E90A0;
   min-height: 30%;
   max-height: 45%;
   background: #222832;
@@ -97,50 +110,64 @@ body .modal-dialog img{
   border-left: 25px #222832 solid;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  border-bottom-right-radius: 10px;  
-  border-bottom-left-radius: 10px;  
-  text-align:center;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  text-align: center;
 }
 
-.assetContainer button{
-  top:70%;
+.assetContainer button {
+  top: 70%;
+  visibility: hidden;
 }
 
-.extendContainer{
+.extendContainer {
   height: 76%;
-  transition-duration: 1.5;  
+  transition-duration: 1.5;
 }
 
-.stats{
-  font:30%;
+.stats {
+  font: 30%;
   color: darkorange;
   align-self: center;
 }
 
-#showPackage :hover{
- cursor: pointer;
+#showPackage:hover {
+  cursor: pointer;
 }
 
-.alert{
- align-self: center; 
- font-size: 130%;
- color:red;
+.alert {
+  align-self: center;
+  font-size: 130%;
+  color: red;
 }
 
-.animationDiv{
+#alertDetails {
+  background: #222832;
+  color: darkorange;
+  display: none;
+  position: absolute;
+  top: -510%;
+  width: 270px;
+  border-radius: 10px;
+  padding: 15px 30px;
+  word-break: break-all;
+  font-size: 12px;
+}
+
+.animationDiv {
   position: absolute;
   width: 70%;
   background: #222832;
   height: 7%;
-  bottom: 1%;
-  left:15%;
+  bottom: 2%;
+  left: 15%;
   align-self: center;
   border-right: 25px #222832 solid;
   border-left: 25px #222832 solid;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  border-bottom-right-radius: 10px;  
-  border-bottom-left-radius: 10px;  
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 #details {
@@ -153,7 +180,8 @@ body .modal-dialog img{
   border-radius: 10px;
   padding: 15px 30px;
   word-break: break-all;
-  font-size: 12px; }
+  font-size: 12px;
+}
 
 .block {
   line-height: 30px;
@@ -162,29 +190,31 @@ body .modal-dialog img{
   position: absolute;
   top: 5%;
   left: 100%;
-  height: 90%;  
+  height: 90%;
   width: 62px;
   border-radius: 4px;
   opacity: 5;
   border: #2EB9D6 solid 1px;
   font-size: 12px;
   transition: background-color 0.5s ease;
-  font-weight: bold; 
-  }
+  font-weight: bold;
+}
 
 .alertBlock {
   transition: background-color 1s ease;
   background: #222832;
-  color:darkorange;
+  color: darkorange;
   border-color: red;
-  }
+}
 
 .lastblock {
   transition: background-color 1s ease;
   background: #2EB9D6;
   color: #222832;
-  border-color: #2EB9D6; }
+  border-color: #2EB9D6;
+}
 
 .block:hover {
   border: #22697A solid 1px;
-  color: #22697A; }
+  color: #22697A;
+}
