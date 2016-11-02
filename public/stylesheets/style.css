@@ -65,6 +65,20 @@ body .modal-dialog img{
   visibility: hidden;
 }
 
+.btn-primary{
+  right: 2%;
+  bottom: 2%;
+  position: absolute;
+}
+
+#myModal {
+  width:80%;
+  top:10%;
+  position: absolute;
+  left: 10%;
+}
+
+
 .blockchainInfo{
   width: 25%;
   min-width: 15%;
