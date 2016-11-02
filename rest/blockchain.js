@@ -61,6 +61,8 @@ let reading = function queryRead(description, callback) {
         reading(description, callback);
         return;
       }
+      //after need to delete from blockchain response
+      delete response.id;
       console.log(`blockchain.js ${response}`);
       callback.send(JSON.parse(response));
     }, 3000);

@@ -57,6 +57,7 @@ function getDeploymentBlock() {
 
 $(document).on('mouseover', '.block', function (event) {
     let height = Number($(this).html());
+    console.log(`let height = Number($(this).html() ${height}`);
     payloadHistory.forEach(function (dataHistory) {
         //console.log("dataHistory " + JSON.stringify(dataHistory));
         if (dataHistory.height === height) {
@@ -77,16 +78,15 @@ function show_details(event, id, message) {
     blocksArray.forEach(function (current) {
         if (current.height === id) {
             currentBlock = current;
-            console.log(currentBlock.height + " || " + id + " || " + message.height);
-        } if (id !== message.height) {
+            //console.log(currentBlock.height + " || " + id + " || " + message.height);
+        }
+        if (id !== message.height) {
             message = { "deployment": "first block!", "created": message.lastTransaction }
         }
     });
-    if (message.temperature > 24) {
-        left = event.pageX - $('#alertDetails').parent().offset().left - 120;
-    } else {
-        left = event.pageX - $('#details').parent().offset().left - 120;
-    }
+
+    left = event.pageX - $('#details').parent().offset().left - 120;
+
     if (left < 0) left = 0;
     var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
     html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';
@@ -94,7 +94,11 @@ function show_details(event, id, message) {
     //html += '<p> Type: &nbsp;&nbsp;' + message.type + '</p>';
     html += '<p> ConsensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
     html += '<p> Payload:' + JSON.stringify(message) + '</p>';
+    if (message.temperature > 24) {
+        $('#details').addClass("alertDetails");
+    }
     $('#details').html(html).css('left', left).fadeIn();
+
 }
 
 function formatDate(date, fmt) {

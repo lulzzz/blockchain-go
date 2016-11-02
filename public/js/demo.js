@@ -135,7 +135,8 @@ function setupTracking() {
     dataInfo = currentPlayer.getTitle() + " is shipping assets";
     infowindow = new google.maps.InfoWindow({
         content: dataInfo,
-        maxWidth: 100
+        maxWidth: 250,
+        maxHeight: 80
     });
 
     infowindow.open(map, currentPlayer);
@@ -221,7 +222,7 @@ function initMap() {
     var mapCenter = new google.maps.LatLng(defaultCoordinates[defaultCoordinates.length - 1].lat, defaultCoordinates[defaultCoordinates.length - 1].lng);
     var mapOptions = {
         center: mapCenter,
-        zoom: 15,
+        zoom: 14,
         mapTypeId: google.maps.MapTypeId.HYBRID
     };
 
@@ -298,7 +299,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 function onLoadAsset() {
     $('.modal-content').empty();
-    $('.modal-content').append('<div id="gearsLoad"><img src="./images/gears.gif"><h4>Creating Asset...</h4></div>');
+    $('.modal-content').append('<div id="gearsLoad"><img src="./images/CatToast2.gif"><h4>Creating Asset...</h4></div>');
     $(".loading").fadeIn();
 }
 
@@ -309,7 +310,7 @@ function createAsset(init) {
     let animationDiv = $('.animationDiv');
     let blockchainInfoDiv = $('.blockchainInfo');
     let assetContainer = $('.assetContainer');
-    let btnStart = $('.assetContainerBody button');
+    let btnStart = $('assetContainerBody button');
 
     setTimeout(function () {
         if (data !== null && data !== undefined) {
