@@ -108,7 +108,7 @@ function doTransaction(action) {
 function checkStatus(context) {
     //console.log(`checkStatus ${context.status}`);
     statsEventListenner(context);
-    if (heldAccountable || temperature > 24) {
+    if (temperature > 24) { //heldAccountable || 
         status = "Verify Package! " + currentPlayer.getTitle() + "";
         let alertMsg = "<label class='alert'> " + context.user + " violated contract! </label>";
         infowindow.setContent(alertMsg);
