@@ -7,7 +7,7 @@
 
 'use strict'
 
-const Promise = require('bluebird');
+//const Promise = require('bluebird');
 let chaincode;
 let response = '';
 
