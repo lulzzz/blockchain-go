@@ -88,6 +88,7 @@ function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
         if (data.temperature > 24) {
+            console.log(`doTransaction - status(return): ${data.status}`);
             data.status = true;
         }
         payloadHistory.push(data);
@@ -320,7 +321,7 @@ function createAsset(init) {
             $('#myModal').fadeOut("slow");
 
             //temporary way to append ui elements => update with react,etc;
-            assetContainerBody.append('<br><img src="./images/pallete.png"><br>' +
+            assetContainerBody.append('<br><img id="packageImg" src="./images/pallete.png"><br>' +
                 '<h4>Asset created</h4>' +
                 '<br><b>Owner: </b>' + data.user.toUpperCase() +
                 '<br><b>Description: </b>' + data.description +

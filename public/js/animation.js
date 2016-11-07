@@ -23,6 +23,7 @@ function getStats() {
             $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
                 $('.lastblock').removeClass('lastblock');
                 if (appendToHistory.status === true && appendToHistory.temperature > 24) {
+                    console.log(`getStats - status(return): ${appendToHistory.status} && ${appendToHistory.temperature}`);
                     $('.block:last').addClass('alertBlock');
                 } else {
                     $('.block:last').addClass('lastblock');
