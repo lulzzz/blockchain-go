@@ -7,8 +7,9 @@
 'use strict'
 
 //loads environment variables for blockchain setup (USA server - blockchain-go)
-const env = require('../env.json'); //env.json(for usa servers)
-console.log(`getting environment variables \n ${env.peers[0].discovery_host}`);
+//const env = require('../env.json'); //env.json(for usa servers)
+const env = require('../rest/local_env.json');
+console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 const peers = env.peers;
 const users = env.users;
 const Ibc1 = require('ibm-blockchain-js');
@@ -24,15 +25,16 @@ function configureIbcJs() {
             peers: [peers[0]], //2
             users: users, //3 [users[1]]
             options: {							//this is optional
-                quiet: true, 						//detailed debug messages on/off true/false
-                tls: true, 						//should app to peer communication use tls?
-                maxRetry: 1						//how many times should we retry register before giving up
+                quiet: false, 						//detailed debug messages on/off true/false
+                tls: false, 						//should app to peer communication use tls?
+                maxRetry: 2				//how many times should we retry register before giving up                
             }
         },
         chaincode: {
             zip_url: 'https://github.com/VitorSousaCode/chaincodes/archive/master.zip',
             unzip_dir: 'chaincodes-master/experimental',
-            git_url: 'https://github.com/VitorSousaCode/chaincodes/experimental'
+            git_url: 'https://github.com/VitorSousaCode/chaincodes/experimental',
+            deployed_name: ""
         }
     };
 
