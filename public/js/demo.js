@@ -111,7 +111,7 @@ function checkStatus(context) {
     statsEventListenner(context);
     if (temperature > 24) { //heldAccountable || 
         status = "Verify Package! " + currentPlayer.getTitle() + "";
-        let alertMsg = "<label class='alert'> " + context.user + " violated contract! </label>";
+        let alertMsg = "<label class='alert'> " + context.user + " has violated the contract! </label>";
         infowindow.setContent(alertMsg);
         infowindow.open(map, currentPlayer);
         verifyValue = temperature;
@@ -171,7 +171,7 @@ function playTracking(values) {
     console.log(`status now  ${data.status}`);
     //update stats window
     checkStatus(package);
-    currentPlayer.setPosition(route[steps + 15]);
+    currentPlayer.setPosition(route[steps + 30]);
     //console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000013522 && currentLng - nextLng < 0.0000013522) {
         console.log(`count ${count}`);
@@ -208,6 +208,8 @@ function playTracking(values) {
 function stopTracking(interval, interval$) {
     clearInterval(interval$);
     clearInterval(interval);
+    finalSummary();
+    //console.log("payloadHistory " + JSON.stringify(payloadHistory));
 }
 
 //--------------------------------------------//------------------------------------------------
@@ -318,7 +320,7 @@ function createAsset(init) {
 
             $('.modal-backdrop').fadeOut();
             $('.modal-dialog').fadeOut("slow");
-            $('#myModal').fadeOut("slow");
+            $('#myModal').modal('hide');
 
             //temporary way to append ui elements => update with react,etc;
             assetContainerBody.append('<br><img id="packageImg" src="./images/pallete.png"><br>' +
@@ -350,6 +352,33 @@ function seePackage() {
     $("#showPackage").mouseout(function () {
         $(".assetContainer").fadeOut("slow");
     });
+}
+
+function finalSummary() {
+
+    let content = $('.modal-content');
+    content.empty();
+    content.append('<div class="modal-body fullbody"><h3>Transaction History</h3></div>' +
+        '<div class="modal-footer fullbody">' +
+        '<br><a target="_blank" href="http://solhub.isc.br.ibm.com/">Learn more about Client Center demos</href></div>');
+
+    payloadHistory.forEach(function (log) {
+        console.log("generating summary " + JSON.stringify(log));
+
+        $('.modal-body').append('<div class="finalsummary">Description:\n ' + log.description +
+            ' User:' + log.user +
+            ' temperature: ' + log.temperature +
+            ' Status : ' + log.status + '</div><br>');
+
+        // if (log.status == true) {
+        //     $('.finalsummary').addClass("infractorData");
+        // }
+    });
+
+    //showing final history
+    console.log(`modal-fade:`);
+    $('.modal-dialog').modal();
+    $('#myModal').modal("show");
 }
 
 /*@{Object data} - listenner to blockchain events*/

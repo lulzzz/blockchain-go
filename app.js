@@ -15,6 +15,7 @@ const appEnv = cfenv.getAppEnv();
 const logger = require('morgan');
 const rest = require('./rest/blockchain.js');
 const start = require('./config/setup.js').startNetwork();
+//const start = require('./config/setupHFC.js').startNetwork();
 let ibc, chaincode = {}, deployed = false, chainData = {};
 
 app.use(logger('dev'));
@@ -42,25 +43,25 @@ setTimeout(function () {
   ibc = require('./config/setup.js').monitor;
 
   ibc.stats.monitor_blockheight(function (chain) {
-    console.log(`new blocks! ${chain.currentBlockHash}`);
+    console.log("monitor_blockheight " + JSON.stringify(chain));
     chainData.currentBlockHash = chain.currentBlockHash;
     chainData.height = chain.height;
 
     ibc.stats.block_stats(chain.height - 1, function (e, stats) {
-      console.log(`block_stats: \n ${stats.transactions[0].uuid}`);
-      chainData.uuid = stats.transactions[0].uuid;
-      chainData.consensusMetadata = stats.consensusMetadata;
+      console.log("\n block_stats" + JSON.stringify(stats));
+      // chainData.uuid = stats.transactions[0].uuid;
+      // chainData.consensusMetadata = stats.consensusMetadata;
 
-      ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
-        if (!deployed) {
-          console.log(`first block:deploy(cc) \n  ${data.type}`);
-          deploymentBlock(chain, stats, data);
-          deployed = true;
-        }
-        console.log(`get_transaction \n  ${data.signature}`);
-        chainData.type = data.type;
-        chainData.created = data.timestamp.seconds;
-      });
+      // ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
+      //   if (!deployed) {
+      //     console.log("\n get_transaction " + JSON.stringify(data));
+      //     deploymentBlock(chain, stats, data);
+      //     deployed = true;
+      //   }
+
+      //   chainData.type = data.type;
+      //   chainData.created = data.timestamp.seconds;
+      // });
     });
   });
 
@@ -77,7 +78,7 @@ setTimeout(function () {
     //console.log(JSON.stringify(chainData));
     res.send(chainData);
   });
-}, 30000);
+}, 60000);
 
 app.get('/deployed', function (req, res) {
   res.send(chaincode);

@@ -8,12 +8,12 @@
 	"dependencies": {
 		"express": "~4.13.3",
 		"cfenv": "1.0.x",
-		"fs":"",
-		"body-parser":"",
-		"ibm-blockchain-js":"",		
-		"morgan":"",
-		"async":""
-
+		"fs": "",
+		"body-parser": "",
+		"ibm-blockchain-js": "",
+		"hfc": "0.5.x",
+		"morgan": "",
+		"async": ""
 	},
 	"repository": {},
 	"engines": {
