@@ -360,7 +360,7 @@ function finalSummary() {
     content.empty();
     content.append('<div class="modal-body fullbody"><h3>Transaction History</h3></div>' +
         '<div class="modal-footer fullbody">' +
-        '<br><a target="_blank" href="http://solhub.isc.br.ibm.com/">Learn more about Client Center demos</href></div>');
+        '<br><a target="_blank" href="http://solhub.isc.br.ibm.com/">Learn more about our demos</href></div>');
 
     payloadHistory.forEach(function (log) {
         console.log("generating summary " + JSON.stringify(log));

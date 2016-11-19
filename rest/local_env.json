@@ -11,11 +11,21 @@
             "api_url": "http://localhost:7050"
         }
     ],
+    "ca": {
+        "discovery_port": 7054,
+        "api_host": "localhost",
+        "api_port_tls": 7054,
+        "api_port": 7054,
+        "type": "ca",
+        "network_id": "dev",
+        "url": "http://localhost:7054"
+    },
     "users": [
         {
             "enrollId": "bob",
             "enrollSecret": "NOE63pEQbL25"
         }
     ],
-    "cert": "https://blockchain-certs.mybluemix.net/us.blockchain.ibm.com.cert"
+    "cert": "https://blockchain-certs.mybluemix.net/us.blockchain.ibm.com.cert",
+    "chaincodepath": "./chaincodes/query.go"
 }

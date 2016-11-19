@@ -12,6 +12,7 @@ const env = require('../rest/local_env.json');
 console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 const peers = env.peers;
 const users = env.users;
+const django = env.chaincodepath;
 const Ibc1 = require('ibm-blockchain-js');
 const ibc = new Ibc1();
 var chaincode;
