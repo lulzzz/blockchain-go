@@ -1,0 +1,74 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\IBM_ADMIN\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install' ]
+2 info using npm@2.12.1
+3 info using node@v4.2.3
+4 verbose readDependencies loading dependencies from c:\GoScripts\src\github.com\Blockchain-Go\package.json
+5 verbose install where, deps [ 'c:\\GoScripts\\src\\github.com\\Blockchain-Go',
+5 verbose install   [ 'express', 'cfenv', 'fs', 'body-parser', 'hfc', 'morgan' ] ]
+6 verbose install where, peers [ 'c:\\GoScripts\\src\\github.com\\Blockchain-Go', [] ]
+7 verbose installManyTop reading for lifecycle c:\GoScripts\src\github.com\Blockchain-Go\package.json
+8 info preinstall BlockchainNodeApp@0.0.1
+9 verbose installManyTop reading scoped package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\body-parser\package.json
+10 verbose installManyTop reading scoped package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\cfenv\package.json
+11 verbose installManyTop reading scoped package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\express\package.json
+12 verbose installManyTop reading scoped package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\fs\package.json
+13 verbose installManyTop reading scoped package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\hfc\package.json
+14 verbose installManyTop reading scoped package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\morgan\package.json
+15 info package.json hfc@0.6.5 license should be a valid SPDX license expression
+16 info package.json fs@0.0.2 fs is also the name of a node core module.
+17 info package.json fs@0.0.2 No description
+18 info package.json fs@0.0.2 No repository field.
+19 verbose readDependencies loading dependencies from c:\GoScripts\src\github.com\Blockchain-Go\package.json
+20 verbose targetResolver reading package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\body-parser\package.json
+21 verbose targetResolver reading package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\cfenv\package.json
+22 verbose targetResolver reading package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\express\package.json
+23 verbose targetResolver reading package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\fs\package.json
+24 verbose targetResolver reading package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\hfc\package.json
+25 verbose targetResolver reading package data from c:\GoScripts\src\github.com\Blockchain-Go\node_modules\morgan\package.json
+26 verbose already installed skipping cfenv@1.0.x c:\GoScripts\src\github.com\Blockchain-Go
+27 verbose already installed skipping fs@0.0.2 c:\GoScripts\src\github.com\Blockchain-Go
+28 verbose already installed skipping body-parser@ c:\GoScripts\src\github.com\Blockchain-Go
+29 verbose already installed skipping hfc@0.6.5 c:\GoScripts\src\github.com\Blockchain-Go
+30 verbose already installed skipping morgan@ c:\GoScripts\src\github.com\Blockchain-Go
+31 verbose already installed skipping express@~4.13.3 c:\GoScripts\src\github.com\Blockchain-Go
+32 silly install resolved []
+33 info build c:\GoScripts\src\github.com\Blockchain-Go
+34 info linkStuff BlockchainNodeApp@0.0.1
+35 silly linkStuff BlockchainNodeApp@0.0.1 has c:\GoScripts\src\github.com as its parent node_modules
+36 verbose linkBins BlockchainNodeApp@0.0.1
+37 verbose linkMans BlockchainNodeApp@0.0.1
+38 verbose rebuildBundles BlockchainNodeApp@0.0.1
+39 verbose rebuildBundles [ 'body-parser', 'cfenv', 'express', 'fs', 'hfc', 'morgan' ]
+40 info install BlockchainNodeApp@0.0.1
+41 verbose unsafe-perm in lifecycle true
+42 info BlockchainNodeApp@0.0.1 Failed to exec install script
+43 verbose stack Error: BlockchainNodeApp@0.0.1 install: `node-gyp rebuild`
+43 verbose stack Exit status 1
+43 verbose stack     at EventEmitter.<anonymous> (C:\Users\IBM_ADMIN\AppData\Roaming\npm\node_modules\npm\lib\utils\lifecycle.js:213:16)
+43 verbose stack     at emitTwo (events.js:87:13)
+43 verbose stack     at EventEmitter.emit (events.js:172:7)
+43 verbose stack     at ChildProcess.<anonymous> (C:\Users\IBM_ADMIN\AppData\Roaming\npm\node_modules\npm\lib\utils\spawn.js:24:14)
+43 verbose stack     at emitTwo (events.js:87:13)
+43 verbose stack     at ChildProcess.emit (events.js:172:7)
+43 verbose stack     at maybeClose (internal/child_process.js:818:16)
+43 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+44 verbose pkgid BlockchainNodeApp@0.0.1
+45 verbose cwd c:\GoScripts\src\github.com\Blockchain-Go
+46 error Windows_NT 6.1.7601
+47 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\IBM_ADMIN\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "install"
+48 error node v4.2.3
+49 error npm  v2.12.1
+50 error code ELIFECYCLE
+51 error BlockchainNodeApp@0.0.1 install: `node-gyp rebuild`
+51 error Exit status 1
+52 error Failed at the BlockchainNodeApp@0.0.1 install script 'node-gyp rebuild'.
+52 error This is most likely a problem with the BlockchainNodeApp package,
+52 error not with npm itself.
+52 error Tell the author that this fails on your system:
+52 error     node-gyp rebuild
+52 error You can get their info via:
+52 error     npm owner ls BlockchainNodeApp
+52 error There is likely additional logging output above.
+53 verbose exit [ 1, true ]

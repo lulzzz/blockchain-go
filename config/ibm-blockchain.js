@@ -7,11 +7,12 @@
 'use strict'
 
 //loads environment variables for blockchain setup (USA server - blockchain-go)
-const env = require('../env.json'); //env.json(for usa servers)
-//const env = require('../rest/local_env.json');
+//const env = require('../env.json'); //env.json(for usa servers)
+const env = require('../rest/local_env.json');
 console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 const peers = env.peers;
 const users = env.users;
+const django = env.chaincodepath;
 const Ibc1 = require('ibm-blockchain-js');
 const ibc = new Ibc1();
 var chaincode;
@@ -58,7 +59,7 @@ function configureIbcJs() {
                     if (err) return;
                 }); //{delay_ms: 60000}
                 console.log("deploying chaincode...");
-                //console.log(JSON.stringify(cc));
+                console.log(JSON.stringify(cc));
             }
             else {
                 console.log('chaincode summary file indicates chaincode has been previously deployed');
@@ -78,6 +79,6 @@ module.exports.startNetwork = function () {
     return configureIbcJs();
 }
 
-module.exports.monitor = {
-    stats: ibc
-}
+// module.exports.monitor = {
+//     stats: ibc
+// }

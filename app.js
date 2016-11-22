@@ -39,46 +39,46 @@ app.post('/request', function (req, res) {
 });
 
 /*Fetching blockchain data*/
-setTimeout(function () {
-  ibc = require('./config/setup.js').monitor;
+// setTimeout(function () {
+//   ibc = require('./config/setup.js').monitor;
 
-  ibc.stats.monitor_blockheight(function (chain) {
-    console.log("monitor_blockheight " + JSON.stringify(chain));
-    chainData.currentBlockHash = chain.currentBlockHash;
-    chainData.height = chain.height;
+//   ibc.stats.monitor_blockheight(function (chain) {
+//     console.log("monitor_blockheight " + JSON.stringify(chain));
+//     chainData.currentBlockHash = chain.currentBlockHash;
+//     chainData.height = chain.height;
 
-    ibc.stats.block_stats(chain.height - 1, function (e, stats) {
-      console.log("\n block_stats" + JSON.stringify(stats));
-      // chainData.uuid = stats.transactions[0].uuid;
-      // chainData.consensusMetadata = stats.consensusMetadata;
+//     ibc.stats.block_stats(chain.height - 1, function (e, stats) {
+//       console.log("\n block_stats" + JSON.stringify(stats));
+//       // chainData.uuid = stats.transactions[0].uuid;
+//       // chainData.consensusMetadata = stats.consensusMetadata;
 
-      // ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
-      //   if (!deployed) {
-      //     console.log("\n get_transaction " + JSON.stringify(data));
-      //     deploymentBlock(chain, stats, data);
-      //     deployed = true;
-      //   }
+//       // ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
+//       //   if (!deployed) {
+//       //     console.log("\n get_transaction " + JSON.stringify(data));
+//       //     deploymentBlock(chain, stats, data);
+//       //     deployed = true;
+//       //   }
 
-      //   chainData.type = data.type;
-      //   chainData.created = data.timestamp.seconds;
-      // });
-    });
-  });
+//       //   chainData.type = data.type;
+//       //   chainData.created = data.timestamp.seconds;
+//       // });
+//     });
+//   });
 
-  function deploymentBlock(chain, stats, data) {
-    chaincode.currentBlockHash = chain.currentBlockHash;
-    chaincode.height = chain.height;
-    chaincode.uuid = stats.transactions[0].uuid;
-    chaincode.consensusMetadata = stats.consensusMetadata;
-    chaincode.type = data.type;
-    chaincode.created = data.timestamp.seconds;
-  }
+//   function deploymentBlock(chain, stats, data) {
+//     chaincode.currentBlockHash = chain.currentBlockHash;
+//     chaincode.height = chain.height;
+//     chaincode.uuid = stats.transactions[0].uuid;
+//     chaincode.consensusMetadata = stats.consensusMetadata;
+//     chaincode.type = data.type;
+//     chaincode.created = data.timestamp.seconds;
+//   }
 
-  app.get('/chainfo', function (req, res) {
-    //console.log(JSON.stringify(chainData));
-    res.send(chainData);
-  });
-}, 60000);
+//   app.get('/chainfo', function (req, res) {
+//     //console.log(JSON.stringify(chainData));
+//     res.send(chainData);
+//   });
+// }, 60000);
 
 app.get('/deployed', function (req, res) {
   res.send(chaincode);

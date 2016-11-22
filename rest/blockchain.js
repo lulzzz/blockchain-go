@@ -24,7 +24,7 @@ function chainInteraction(request, callback) {
   if (request.action === 'create') {
     request.id = makeid();
     //invoke.init_asset
-    chaincode.invoke.init_asset(
+    chaincode.init_asset(
       [request.description,
       request.lastTransaction,
       request.user,
@@ -36,7 +36,7 @@ function chainInteraction(request, callback) {
       });
   } else if (request.action === 'transfer') {
     //invoke.set_user
-    chaincode.invoke.set_user(
+    chaincode.set_user(
       [request.description,
       request.user,
       request.temperature], function (err, res) {
@@ -54,7 +54,7 @@ function chainInteraction(request, callback) {
 
 let reading = function queryRead(description, callback) {
   setTimeout(function () {
-    chaincode.query.read([description], function (err, res) {
+    chaincode.read([description], function (err, res) {
       if (!err) response = res;
       if (response === undefined) {
         console.log(`invoking recursive resource`);
