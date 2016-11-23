@@ -188,4 +188,13 @@ module.exports = function () {
         });
     }
 
+    var restModule = {
+        init: init,
+        init_asset: init_asset,
+        read: read,
+        set_user: set_user,
+        registrar: registrar
+    }
+    return restModule;
+
 }

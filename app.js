@@ -14,8 +14,8 @@ const cfenv = require('cfenv');
 const appEnv = cfenv.getAppEnv();
 const logger = require('morgan');
 const rest = require('./rest/blockchain.js');
-//const start = require('./config/setup.js').startNetwork();
-const start = require('./config/hyperledgerfc.js').startNetwork();
+const start = require('./config/setup.js').startNetwork();
+//const start = require('./config/hyperledgerfc.js').startNetwork();
 let ibc, chaincode = {}, deployed = false, chainData = {};
 
 app.use(logger('dev'));
