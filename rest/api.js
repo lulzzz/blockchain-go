@@ -1,7 +1,7 @@
 'use strict'
 
-var host = '85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com'; //85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com
-var porta = '5001'; // porta da v0.6 5001
+var host = 'localhost'; //85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com
+var porta = '7050'; // porta da v0.6 5001
 var request = require('request-promise');
 
 module.exports = function () {

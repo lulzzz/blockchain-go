@@ -55,7 +55,7 @@ function configureIbcJs() {
             chaincode = cc;
             //decide if I need to deploy or not - fix
             if (!cc.details.deployed_name || cc.details.deployed_name === "") {
-                cc.deploy('init', ['99'], { delay_ms: 40000 }, function (err, success) {
+                cc.deploy('init', ['99'], { delay_ms: 40000 }, function(err, success) {
                     if (err) return;
                 }); //{delay_ms: 60000}
                 console.log("deploying chaincode...");
@@ -70,15 +70,15 @@ function configureIbcJs() {
     }
 }
 
-module.exports.chain = function () {
+module.exports.chain = function() {
     console.log(`chaincode ${chaincode}`);
     return chaincode;
 };
 
-module.exports.startNetwork = function () {
+module.exports.startNetwork = function() {
     return configureIbcJs();
 }
 
-// module.exports.monitor = {
-//     stats: ibc
-// }
+module.exports.monitor = {
+    stats: ibc
+}
