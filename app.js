@@ -49,15 +49,17 @@ setTimeout(function() {
 
         ibc.stats.block_stats(chain.height - 1, function(e, stats) {
             console.log("\n block_stats" + JSON.stringify(stats));
-            // chainData.uuid = stats.transactions[0].uuid;
-            // chainData.consensusMetadata = stats.consensusMetadata;
-
+            chainData.uuid = Math.floor((Math.random() * 8000) + 1);//stats.transactions[0].uuid;
+            chainData.consensusMetadata = makeid();//stats.consensusMetadata;
+            //temp
+            chainData.type = "bolinha";//data.type;
+            chainData.created = new Date().toLocaleString();
             // ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
-            //   if (!deployed) {
-            //     console.log("\n get_transaction " + JSON.stringify(data));
-            //     deploymentBlock(chain, stats, data);
-            //     deployed = true;
-            //   }
+            if (!deployed) {
+                console.log("\n get_transaction " + JSON.stringify(chainData));
+                deploymentBlock(chain, stats, chainData);//data
+                deployed = true;
+            }
 
             //   chainData.type = data.type;
             //   chainData.created = data.timestamp.seconds;
@@ -68,10 +70,10 @@ setTimeout(function() {
     function deploymentBlock(chain, stats, data) {
         chaincode.currentBlockHash = chain.currentBlockHash;
         chaincode.height = chain.height;
-        chaincode.uuid = stats.transactions[0].uuid;
-        chaincode.consensusMetadata = stats.consensusMetadata;
+        chaincode.uuid = data.uuid;
+        chaincode.consensusMetadata = data.consensusMetadata;
         chaincode.type = data.type;
-        chaincode.created = data.timestamp.seconds;
+        chaincode.created = data.created;//timestamp.seconds;
     }
 
     app.get('/chainfo', function(req, res) {
@@ -89,3 +91,11 @@ app.listen(appEnv.port, '0.0.0.0', function() {
     // print a message when the server starts listening
     console.log("server starting on " + appEnv.url);
 });
+
+function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPKRSTUVXZ";
+    for (var i = 0; i < 10; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
