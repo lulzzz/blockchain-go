@@ -87,10 +87,10 @@ function show_details(event, id, message) {
     });
 
     left = event.pageX - $('#details').parent().offset().left - 120;
-
+    //formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p')
     if (left < 0) left = 0;
     var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
-    html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';
+    html += '<hr class="line"/><p>Created: &nbsp;' + currentBlock.created + ' UTC</p>';
     html += '<p> UUID: ' + currentBlock.uuid + '</p>';
     //html += '<p> Type: &nbsp;&nbsp;' + message.type + '</p>';
     html += '<p> ConsensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';

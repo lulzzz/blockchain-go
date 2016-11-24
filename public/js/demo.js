@@ -171,7 +171,7 @@ function playTracking(values) {
     console.log(`status now  ${data.status}`);
     //update stats window
     checkStatus(package);
-    currentPlayer.setPosition(route[steps + 30]);
+    currentPlayer.setPosition(route[steps + 15]);
     //console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000013522 && currentLng - nextLng < 0.0000013522) {
         console.log(`count ${count}`);
@@ -370,7 +370,7 @@ function finalSummary() {
             ' temperature: ' + log.temperature +
             ' Status : ' + log.status + '</div><br>');
 
-        // if (log.status == true) {
+        // if (log.temperature > 24) {
         //     $('.finalsummary').addClass("infractorData");
         // }
     });
