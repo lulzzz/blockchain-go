@@ -357,6 +357,7 @@ function seePackage() {
 function finalSummary() {
 
     let content = $('.modal-content');
+    let c = 1;
     content.empty();
     content.append('<div class="modal-body fullbody"><h3>Transaction History</h3></div>' +
         '<div class="modal-footer fullbody">' +
@@ -364,15 +365,15 @@ function finalSummary() {
 
     payloadHistory.forEach(function (log) {
         console.log("generating summary " + JSON.stringify(log));
+        $('.modal-body').append('<div class="finalsummary" id="historyLog' + c + '"><strong>Description:\n '
+            + log.description + '   User: ' + log.user + ' temperature: ' + log.temperature + ' C.° </strong></div><br>');
 
-        $('.modal-body').append('<div class="finalsummary">Description:\n ' + log.description +
-            ' User:' + log.user +
-            ' temperature: ' + log.temperature +
-            ' Status : ' + log.status + '</div><br>');
-
-        // if (log.temperature > 24) {
-        //     $('.finalsummary').addClass("infractorData");
-        // }
+        if (log.temperature > 24) {
+            let thisElem = "#historyLog" + c;
+            console.log(`temperature$ ${log.temperature}`);
+            $(thisElem).addClass("infractorData");
+        }
+        c++;
     });
 
     //showing final history

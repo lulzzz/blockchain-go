@@ -23,11 +23,11 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.render("index.html");
 });
 
-app.post('/request', function(req, res) {
+app.post('/request', function (req, res) {
     console.log(JSON.stringify(req.body));
     console.log(`handling ${req.body.user}'s request`);
     if (req.body !== null && req.body !== undefined) {
@@ -39,15 +39,15 @@ app.post('/request', function(req, res) {
 });
 
 /*Fetching blockchain data*/
-setTimeout(function() {
+setTimeout(function () {
     ibc = require('./config/ibm-blockchain.js').monitor;
 
-    ibc.stats.monitor_blockheight(function(chain) {
+    ibc.stats.monitor_blockheight(function (chain) {
         console.log("monitor_blockheight " + JSON.stringify(chain));
         chainData.currentBlockHash = chain.currentBlockHash;
         chainData.height = chain.height;
 
-        ibc.stats.block_stats(chain.height - 1, function(e, stats) {
+        ibc.stats.block_stats(chain.height - 1, function (e, stats) {
             console.log("\n block_stats" + JSON.stringify(stats));
             chainData.uuid = Math.floor((Math.random() * 8000) + 1);//stats.transactions[0].uuid;
             chainData.consensusMetadata = makeid();//stats.consensusMetadata;
@@ -76,18 +76,18 @@ setTimeout(function() {
         chaincode.created = data.created;//timestamp.seconds;
     }
 
-    app.get('/chainfo', function(req, res) {
+    app.get('/chainfo', function (req, res) {
         //console.log(JSON.stringify(chainData));
         res.send(chainData);
     });
 }, 60000);
 
-app.get('/deployed', function(req, res) {
+app.get('/deployed', function (req, res) {
     res.send(chaincode);
 });
 
 // start server on the specified port and binding host appEnv.port
-app.listen(80, '0.0.0.0', function() {
+app.listen(appEnv.port, '0.0.0.0', function () {
     // print a message when the server starts listening
     console.log("server starting on " + appEnv.url);
 });

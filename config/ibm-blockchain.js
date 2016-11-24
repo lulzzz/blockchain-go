@@ -8,7 +8,8 @@
 
 //loads environment variables for blockchain setup (USA server - blockchain-go)
 //const env = require('../env.json'); //env.json(for usa servers)
-const env = require('../rest/local_env.json');
+//const env = require('../rest/local_env.json');
+const env = require('../rest/server_env.json');
 console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 const peers = env.peers;
 const users = env.users;
@@ -55,7 +56,7 @@ function configureIbcJs() {
             chaincode = cc;
             //decide if I need to deploy or not - fix
             if (!cc.details.deployed_name || cc.details.deployed_name === "") {
-                cc.deploy('init', ['99'], { delay_ms: 40000 }, function(err, success) {
+                cc.deploy('init', ['99'], { delay_ms: 40000 }, function (err, success) {
                     if (err) return;
                 }); //{delay_ms: 60000}
                 console.log("deploying chaincode...");
@@ -70,12 +71,12 @@ function configureIbcJs() {
     }
 }
 
-module.exports.chain = function() {
+module.exports.chain = function () {
     console.log(`chaincode ${chaincode}`);
     return chaincode;
 };
 
-module.exports.startNetwork = function() {
+module.exports.startNetwork = function () {
     return configureIbcJs();
 }
 
