@@ -23,7 +23,8 @@
 // "HFC" stands for "Hyperledger Fabric Client"
 var hfc = require("hfc");
 
-const env = require('../rest/local_env.json');
+//const env = require('../rest/local_env.json');
+const env = require('../env.json');
 console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 
 // get the addresses from the docker-compose environment
