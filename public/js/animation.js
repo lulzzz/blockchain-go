@@ -4,7 +4,7 @@ let space = 32, currentPayload;
 let blocksArray = [];
 
 function getStats() {
-    $.get('/chainfo', function (data) {
+    $.get('/events/' + 2, function (data) {
         let found = false;
         blocksArray.forEach(function (seekAndDestroy) {
             if (seekAndDestroy.height === data.height) {
@@ -43,7 +43,7 @@ function sendBlocks(payload) {
 }
 
 function getDeploymentBlock() {
-    $.get('/deployed', function (deployed) {
+    $.get('/events/' + 1, function (deployed) {
         blocksArray.push(deployed);
         block = block + 1;
         $(".animationDiv").append("<div id='firstBlockBox'class='block'>" + deployed.height + "</div>");

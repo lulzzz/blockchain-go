@@ -87,6 +87,7 @@ $(document).ready(function () {
 function doTransaction(action) {
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
+        console.log("response " + typeof (data));
         if (data.temperature > 24) {
             console.log(`doTransaction - status(return): ${data.status}`);
             data.status = true;

@@ -1,16 +1,17 @@
-var host = 'localhost'; //85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com
-var porta = '7050'; // porta da v0.6 5001
-var request = require('request-promise');
-//var reqs = require('request');
+'use strict'
+
+let host = 'localhost'; //85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com
+let port = '7050'; // port da v0.6 5001
+const request = require('request-promise');
+const blockchain = require('../rest/listenner')();
 
 module.exports = function () {
-    'use strict'
 
     var chaincodeId, secureContextId;
 
     function registrar(user, secret) {
         console.log("/registrar/:");
-        let url = "http://" + host + ":" + porta
+        let url = "http://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/registrar',
@@ -38,7 +39,7 @@ module.exports = function () {
 
     function init() {
         console.log("/init/: " + secureContextId);
-        let url = "http://" + host + ":" + porta
+        let url = "http://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/chaincode',
@@ -72,6 +73,7 @@ module.exports = function () {
             console.log(`success:deployed hash ${response}`);
             let id = JSON.parse(response);
             chaincodeId = id.result.message;
+            blockchain.getListenner(host, port);
             return;
         }).catch(function (err) {
             if (err) {
@@ -83,7 +85,7 @@ module.exports = function () {
 
     function init_asset(params, callback) {
         console.log("/init_asset/:");
-        let url = "http://" + host + ":" + porta
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -112,16 +114,16 @@ module.exports = function () {
 
         request(options).then(function (response) {
             console.log("initializing asset " + JSON.stringify(response));
-            callback(null, response);
+            return callback(null, response);
         }).catch(function (err) {
             console.log("error creating asset");
-            callback(err);
+            return callback(err);
         });
     }
 
     function set_user(params, callback) {
         console.log("/set_user/:");
-        let url = "http://" + host + ":" + porta
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -151,18 +153,18 @@ module.exports = function () {
 
         request(options).then(function (response) {
             console.log("setting user " + JSON.stringify(response));
-            callback(null, response);
+            return callback(null, response);
         }).catch(function (err) {
             console.log("error transfering asset");
-            callback(err);
+            return callback(err);
         });
     }
 
     function read(params, callback) {
-        console.log("/reading/: " + chaincodeId);
-        let url = "http://" + host + ":" + porta
+        console.log("/reading/: " + JSON.stringify(params));
+        let url = "http://" + host + ":" + port
         var options = {
-            "method": 'POST',
+            //"method": 'POST',
             "url": url + '/chaincode',
             "headers": {
                 'Accept': 'application/json',
@@ -187,12 +189,12 @@ module.exports = function () {
             })
         };
 
-        request(options).then(function (response) {
-            console.log("reading..." + JSON.stringify(response));
-            callback(null, response);
+        request.post(options).then(function (response) {
+            console.log(`reading...${response}`);
+            return callback(null, response);
         }).catch(function (err) {
             console.log("error reading state");
-            callback(err);
+            return callback(err);
         });
     }
 
@@ -200,6 +202,7 @@ module.exports = function () {
         invoke: { init: init, init_asset: init_asset, set_user: set_user, registrar: registrar },
         query: { read: read }
     }
+
     return restModule;
 
 }
