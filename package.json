@@ -11,8 +11,8 @@
 		"fs": "0.0.2",
 		"body-parser": "",
 		"request-promise": "^2.0.1",
-		"morgan": "",
-                "hfc":"^0.6.5"
+		"request": "",
+		"morgan": ""
 	},
 	"repository": {},
 	"engines": {

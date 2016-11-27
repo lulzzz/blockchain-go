@@ -9,7 +9,7 @@
 //loads environment variables for blockchain setup (USA server - blockchain-go)
 //const env = require('../env.json'); //env.json(for usa servers)
 const env = require('../rest/local_env.json');
-const config = require('../rest/api.js');
+const api = require('../rest/api.js');
 console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 const peers = env.peers;
 const users = env.users;
@@ -17,11 +17,18 @@ var chaincode;
 
 function runNetwork() {
 
-    //update to get user params
-    let rest = config();
-    rest.registrar();
-    rest.init();
-    chaincode = rest;
+    //index of users[] to be registered
+    let x = 0;
+    let rest = api();
+    let admin = { user: env.users[x].enrollId, secret: env.users[x].enrollSecret };
+
+    let getRegistrar = function (req) {
+        rest.invoke.registrar(req.user, req.secret);
+        chaincode = rest;
+    }
+
+    getRegistrar(admin);
+
 }
 
 

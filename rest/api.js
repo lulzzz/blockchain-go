@@ -1,41 +1,46 @@
-'use strict'
-
 var host = 'localhost'; //85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com
 var porta = '7050'; // porta da v0.6 5001
 var request = require('request-promise');
+//var reqs = require('request');
 
 module.exports = function () {
+    'use strict'
 
-    function registrar() {
+    var chaincodeId, secureContextId;
+
+    function registrar(user, secret) {
         console.log("/registrar/:");
         let url = "http://" + host + ":" + porta
         var options = {
-            "method": 'POST',
+            //"method": 'POST',
             "url": url + '/registrar',
             "headers": {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             "body": JSON.stringify({
-                "enrollId": "test_user0",
-                "enrollSecret": "MS9qrN8hFjlE"
+                "enrollId": user,
+                "enrollSecret": secret
             })
         };
 
-        request(options).then(function (response) {
-            console.log("getting answers " + JSON.stringify(response));
-            return response;
+        request.post(options).then(function (response) {
+            console.log(`getting answers ${response}`);
+            secureContextId = user;
+            return init();
         }).catch(function (err) {
-            console.log("error getting registrar");
-            return err;
+            if (err) {
+                console.log("error getting registrar");
+                return err;
+            }
         });
     }
 
     function init() {
-        console.log("/init/:");
+        console.log("/init/: " + secureContextId);
         let url = "http://" + host + ":" + porta
         var options = {
-            "method": 'POST',
+            //"method": 'POST',
             "url": url + '/chaincode',
             "headers": {
                 'Accept': 'application/json',
@@ -48,7 +53,7 @@ module.exports = function () {
                     "type": 1,
                     "chaincodeID": {
                         "path": "https://github.com/VitorSousaCode/chaincodes/experimental",
-                        "name": "main"
+                        "name": "chaincodeMain"
                     },
                     "ctorMsg": {
                         "function": "init",
@@ -56,18 +61,23 @@ module.exports = function () {
                             "99"
                         ]
                     },
-                    "secureContext": "test_user0"
+                    "secureContext": secureContextId
                 },
                 "id": 1
             })
         };
 
-        request(options).then(function (response) {
-            console.log("getting answers " + JSON.stringify(response));
-            return response;
+        request.post(options).then(function (response) {
+            //console.log("$%& " + typeof (response));
+            console.log(`success:deployed hash ${response}`);
+            let id = JSON.parse(response);
+            chaincodeId = id.result.message;
+            return;
         }).catch(function (err) {
-            console.log("error getting registrar");
-            return err;
+            if (err) {
+                console.log("error on deploying" + err);
+                return err;
+            }
         });
     }
 
@@ -87,15 +97,14 @@ module.exports = function () {
                 "params": {
                     "type": 1,
                     "chaincodeID": {
-                        "path": "a48dcaacfce72a103bf0e66a0df669f70e119b1c8571f791e7df1265a663b5c1a08cd94543f6635610d620484cf5aecaff8236429dd47ec36add3faa04da2e78",
-                        "name": "main"
+                        "name": chaincodeId
                     },
                     "ctorMsg": {
                         "function": "init_asset",
                         "args": params
 
                     },
-                    "secureContext": "test_user0"
+                    "secureContext": secureContextId
                 },
                 "id": 1
             })
@@ -126,7 +135,7 @@ module.exports = function () {
                 "params": {
                     "type": 1,
                     "chaincodeID": {
-                        "path": "a48dcaacfce72a103bf0e66a0df669f70e119b1c8571f791e7df1265a663b5c1a08cd94543f6635610d620484cf5aecaff8236429dd47ec36add3faa04da2e78",
+                        "path": chaincodeId,
                         "name": "main"
                     },
                     "ctorMsg": {
@@ -134,7 +143,7 @@ module.exports = function () {
                         "args": params
 
                     },
-                    "secureContext": "test_user0"
+                    "secureContext": secureContextId
                 },
                 "id": 1
             })
@@ -150,7 +159,7 @@ module.exports = function () {
     }
 
     function read(params, callback) {
-        console.log("/reading/:");
+        console.log("/reading/: " + chaincodeId);
         let url = "http://" + host + ":" + porta
         var options = {
             "method": 'POST',
@@ -165,15 +174,14 @@ module.exports = function () {
                 "params": {
                     "type": 1,
                     "chaincodeID": {
-                        "path": "a48dcaacfce72a103bf0e66a0df669f70e119b1c8571f791e7df1265a663b5c1a08cd94543f6635610d620484cf5aecaff8236429dd47ec36add3faa04da2e78",
-                        "name": "main"
+                        "name": chaincodeId
                     },
                     "ctorMsg": {
                         "function": "read",
                         "args": params
 
                     },
-                    "secureContext": "test_user0"
+                    "secureContext": secureContextId
                 },
                 "id": 1
             })
@@ -189,11 +197,8 @@ module.exports = function () {
     }
 
     var restModule = {
-        init: init,
-        init_asset: init_asset,
-        read: read,
-        set_user: set_user,
-        registrar: registrar
+        invoke: { init: init, init_asset: init_asset, set_user: set_user, registrar: registrar },
+        query: { read: read }
     }
     return restModule;
 

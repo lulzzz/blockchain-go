@@ -22,8 +22,8 @@
     },
     "users": [
         {
-            "enrollId": "bob",
-            "enrollSecret": "NOE63pEQbL25"
+            "enrollId": "test_user3",
+            "enrollSecret": "vWdLCE00vJy0"
         }
     ],
     "cert": "https://blockchain-certs.mybluemix.net/us.blockchain.ibm.com.cert",

@@ -15,7 +15,8 @@ const appEnv = cfenv.getAppEnv();
 const logger = require('morgan');
 const rest = require('./rest/blockchain.js');
 //const start = require('./config/ibm-blockchain.js').startNetwork();
-const start = require('./config/hyperledgerfc.js').startNetwork();
+//const start = require('./config/hyperledgerfc.js').startNetwork();
+const start = require('./config/setup.js').startNetwork();
 let ibc, chaincode = {}, deployed = false, chainData = {};
 
 app.use(logger('dev'));
@@ -39,48 +40,48 @@ app.post('/request', function (req, res) {
 });
 
 /*Fetching blockchain data*/
-setTimeout(function () {
-    ibc = require('./config/ibm-blockchain.js').monitor;
+// setTimeout(function () {
+//     ibc = require('./config/ibm-blockchain.js').monitor;
 
-    ibc.stats.monitor_blockheight(function (chain) {
-        console.log("monitor_blockheight " + JSON.stringify(chain));
-        chainData.currentBlockHash = chain.currentBlockHash;
-        chainData.height = chain.height;
+//     ibc.stats.monitor_blockheight(function (chain) {
+//         console.log("monitor_blockheight " + JSON.stringify(chain));
+//         chainData.currentBlockHash = chain.currentBlockHash;
+//         chainData.height = chain.height;
 
-        ibc.stats.block_stats(chain.height - 1, function (e, stats) {
-            console.log("\n block_stats" + JSON.stringify(stats));
-            chainData.uuid = Math.floor((Math.random() * 8000) + 1);//stats.transactions[0].uuid;
-            chainData.consensusMetadata = makeid();//stats.consensusMetadata;
-            //temp
-            chainData.type = "bolinha";//data.type;
-            chainData.created = new Date().toLocaleString();
-            // ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
-            if (!deployed) {
-                console.log("\n get_transaction " + JSON.stringify(chainData));
-                deploymentBlock(chain, stats, chainData);//data
-                deployed = true;
-            }
+//         ibc.stats.block_stats(chain.height - 1, function (e, stats) {
+//             console.log("\n block_stats" + JSON.stringify(stats));
+//             chainData.uuid = Math.floor((Math.random() * 8000) + 1);//stats.transactions[0].uuid;
+//             chainData.consensusMetadata = makeid();//stats.consensusMetadata;
+//             //temp
+//             chainData.type = "bolinha";//data.type;
+//             chainData.created = new Date().toLocaleString();
+//             // ibc.stats.get_transaction(stats.transactions[0].uuid, function (e, data) {
+//             if (!deployed) {
+//                 console.log("\n get_transaction " + JSON.stringify(chainData));
+//                 deploymentBlock(chain, stats, chainData);//data
+//                 deployed = true;
+//             }
 
-            //   chainData.type = data.type;
-            //   chainData.created = data.timestamp.seconds;
-            // });
-        });
-    });
+//             //   chainData.type = data.type;
+//             //   chainData.created = data.timestamp.seconds;
+//             // });
+//         });
+//     });
 
-    function deploymentBlock(chain, stats, data) {
-        chaincode.currentBlockHash = chain.currentBlockHash;
-        chaincode.height = chain.height;
-        chaincode.uuid = data.uuid;
-        chaincode.consensusMetadata = data.consensusMetadata;
-        chaincode.type = data.type;
-        chaincode.created = data.created;//timestamp.seconds;
-    }
+//     function deploymentBlock(chain, stats, data) {
+//         chaincode.currentBlockHash = chain.currentBlockHash;
+//         chaincode.height = chain.height;
+//         chaincode.uuid = data.uuid;
+//         chaincode.consensusMetadata = data.consensusMetadata;
+//         chaincode.type = data.type;
+//         chaincode.created = data.created;//timestamp.seconds;
+//     }
 
-    app.get('/chainfo', function (req, res) {
-        //console.log(JSON.stringify(chainData));
-        res.send(chainData);
-    });
-}, 60000);
+//     app.get('/chainfo', function (req, res) {
+//         //console.log(JSON.stringify(chainData));
+//         res.send(chainData);
+//     });
+// }, 60000);
 
 app.get('/deployed', function (req, res) {
     res.send(chaincode);

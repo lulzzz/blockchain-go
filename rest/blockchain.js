@@ -12,7 +12,7 @@ let chaincode;
 let response = '';
 
 module.exports.action = function (params, callback) {
-  chaincode = require('../config/ibm-blockchain.js').chain();
+  chaincode = require('../config/setup.js').chain();
   return chainInteraction(params, callback);
 }
 
