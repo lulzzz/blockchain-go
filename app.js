@@ -29,6 +29,20 @@ app.post('/request', function(req, res) {
     }
 });
 
+//temporary way(without using routes)
+setTimeout(function() {
+
+    app.get('/blockchain', function(req, res) {
+        let blockchain = require('./rest/listenner').blockdata();
+        res.send(blockchain);
+    });
+
+    app.get('/genesis', function(req, res) {
+        let genesis = require('./rest/listenner').chaincode();
+        res.send(genesis);
+    });
+}, 3000);
+
 // start server on the specified port and binding host appEnv.port
 app.listen(appEnv.port, '0.0.0.0', function() {
     // print a message when the server starts listening

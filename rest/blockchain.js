@@ -31,9 +31,9 @@ function chainInteraction(request, callback) {
             request.temperature,
             request.id], function(err, res) {
                 if (!err) {
-                    console.log(`queryRead out`);
+                    console.log(`init_asset out`);
                     setTimeout(function() {
-                        console.log(`queryRead in`);
+                        console.log(`init_asset in`);
                         return reading(request.description, callback);
                     }, 5000);
                 }
@@ -45,11 +45,16 @@ function chainInteraction(request, callback) {
             request.user,
             request.temperature], function(err, res) {
                 if (!err) {
-                    return reading(request.description, callback);
+                    console.log(`set_user out`);
+                    setTimeout(function() {
+                        console.log(`set_user in`);
+                        return reading(request.description, callback);
+                    }, 5000);
                 }
             });
     } else if (request.action === 'read') {
         //chaincode.query
+        console.log(`read%%`);
         return reading(request.description, callback);
     } else {
         response = 'function not listed';

@@ -13,8 +13,8 @@ module.exports = function () {
     app.use(bodyParser.json());
     app.use(express.static('public'));//__dirname +
     app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-    /*routes**/
-    app.get('/events/:id', listen);
+    /*routes - not working yet**/
+    //app.get('/events/:id', listen);
 
     return app;
 
