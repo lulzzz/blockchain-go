@@ -1,7 +1,7 @@
 'use strict'
 
-let host = 'localhost'; //85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com
-let port = '7050'; // port da v0.6 5001
+let host = '85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com'; //
+let port = '5001'; // port da v0.6 5001
 const request = require('request-promise');
 const blockchain = require('../rest/listenner')();
 
@@ -11,7 +11,7 @@ module.exports = function () {
 
     function registrar(user, secret) {
         console.log("/registrar/:");
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/registrar',
@@ -28,10 +28,11 @@ module.exports = function () {
         request.post(options).then(function (response) {
             console.log(`getting answers ${response}`);
             secureContextId = user;
+            blockchain.getListenner(host, port);
             return init();
         }).catch(function (err) {
             if (err) {
-                console.log("error getting registrar");
+                console.log("error getting registrar " + err);
                 return err;
             }
         });
@@ -39,7 +40,7 @@ module.exports = function () {
 
     function init() {
         console.log("/init/: " + secureContextId);
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/chaincode',
@@ -73,7 +74,6 @@ module.exports = function () {
             console.log(`success:deployed hash ${response}`);
             let id = JSON.parse(response);
             chaincodeId = id.result.message;
-            blockchain.getListenner(host, port);
             return;
         }).catch(function (err) {
             if (err) {
@@ -85,7 +85,7 @@ module.exports = function () {
 
     function init_asset(params, callback) {
         console.log("/init_asset/:");
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -113,7 +113,7 @@ module.exports = function () {
         };
 
         request(options).then(function (response) {
-            console.log("initializing asset " + JSON.stringify(response));
+            console.log(`initializing asset ${response}`);
             return callback(null, response);
         }).catch(function (err) {
             console.log("error creating asset");
@@ -122,8 +122,8 @@ module.exports = function () {
     }
 
     function set_user(params, callback) {
-        console.log("/set_user/:");
-        let url = "http://" + host + ":" + port
+        console.log("/set_user/: " + params.temperature);
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -137,8 +137,8 @@ module.exports = function () {
                 "params": {
                     "type": 1,
                     "chaincodeID": {
-                        "path": chaincodeId,
-                        "name": "main"
+                        //"path": chaincodeId,
+                        "name": chaincodeId
                     },
                     "ctorMsg": {
                         "function": "set_user",
@@ -152,7 +152,7 @@ module.exports = function () {
         };
 
         request(options).then(function (response) {
-            console.log("setting user " + JSON.stringify(response));
+            console.log(`setting user ${response}`);
             return callback(null, response);
         }).catch(function (err) {
             console.log("error transfering asset");
@@ -161,8 +161,8 @@ module.exports = function () {
     }
 
     function read(params, callback) {
-        console.log("/reading/: " + JSON.stringify(params));
-        let url = "http://" + host + ":" + port
+        console.log(`/reading/: ${params}`);
+        let url = "https://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/chaincode',

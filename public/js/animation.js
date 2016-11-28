@@ -5,7 +5,7 @@ let blocksArray = [];
 
 function getStats() {
     $.get('/blockchain', function(data) {
-        console.log("blockchain: " + JSON.stringify(data));
+        //console.log("blockchain: " + JSON.stringify(data));
         let found = false;
         blocksArray.forEach(function(seekAndDestroy) {
             if (seekAndDestroy.height === data.height) {
@@ -45,7 +45,7 @@ function sendBlocks(payload) {
 
 function getDeploymentBlock() {
     $.get('/genesis', function(deployed) {
-        console.log("genesis: " + JSON.stringify(deployed));
+        //console.log("genesis: " + JSON.stringify(deployed));
         blocksArray.push(deployed);
         block = block + 1;
         $(".animationDiv").append("<div id='firstBlockBox'class='block'>" + deployed.height + "</div>");

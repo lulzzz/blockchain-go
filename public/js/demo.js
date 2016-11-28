@@ -22,7 +22,6 @@ var map,
     now = new Date().toLocaleString(),
     data = { description: pack, user: "Industry", action: "create", "temperature": temperature, lastTransaction: now };
 
-
 var defaultCoordinates = [{
     "lat": -23.56996189423875,
     "lng": -46.65141653365975
@@ -85,17 +84,18 @@ $(document).ready(function () {
 
 /*@{Object data} - Rest functions*/
 function doTransaction(action) {
+    console.log("/request " + JSON.stringify(action));
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
-        console.log("response " + typeof (data));
+        console.log("response " + JSON.stringify(data));
         if (data.temperature > 24) {
-            console.log(`doTransaction - status(return): ${data.status}`);
+            //console.log(`doTransaction - status(return): ${data.status}`);
             data.status = true;
         }
         payloadHistory.push(data);
         getStats(payloadHistory);
         if (data.status === true && data.user === currentPlayer.getTitle()) {
-            console.log(`${currentPlayer.getTitle()} = ${data.user}`);
+            //console.log(`${currentPlayer.getTitle()} = ${data.user}`);
             heldAccountable = true;
             checkStatus(data);
         } else {
@@ -117,8 +117,8 @@ function checkStatus(context) {
         infowindow.open(map, currentPlayer);
         verifyValue = temperature;
         data.status === false;
-        console.log(`verifyValue: (checkStatus) ${verifyValue}`);
-        console.log(`status: (false?) ${data.status}`);
+        // console.log(`verifyValue: (checkStatus) ${verifyValue}`);
+        // console.log(`status: (false?) ${data.status}`);
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
                 verifyOwner = playerSet[i][0];
@@ -168,20 +168,20 @@ function playTracking(values) {
         package.temperature = verifyValue
         console.log(`Verifying value ${verifyValue} || infractors?: ${verifyOwner} heldAccountable ${heldAccountable}`);
     }
-    console.log(`heldAccountable ${heldAccountable}`);
-    console.log(`status now  ${data.status}`);
+    //console.log(`heldAccountable ${heldAccountable}`);
+    //console.log(`status now  ${data.status}`);
     //update stats window
     checkStatus(package);
     currentPlayer.setPosition(route[steps + 15]);
     //console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000013522 && currentLng - nextLng < 0.0000013522) {
-        console.log(`count ${count}`);
+        //console.log(`count ${count}`);
         currentPlayer = markers[count];
         package.user = currentPlayer.getTitle();
         package.action = "transfer";
 
         //current package's owner
-        console.log(`interval ${package.user}`);
+        //console.log(`interval ${package.user}`);
 
         //request to server
         doTransaction(package);

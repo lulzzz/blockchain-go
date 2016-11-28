@@ -8,7 +8,7 @@
 'use strict'
 
 const request = require('request-promise');
-var blockdata = {}, deployed = false, chaincode = {};
+var blockdata = {}, chaincode = {};
 
 module.exports = function() {
 
@@ -20,8 +20,8 @@ module.exports = function() {
     }          
     ***********************************************/
     function getChain(host, port, callback) {
-        console.log("[blackbird] /chain: ");
-        let url = "http://" + host + ":" + port
+        // console.log("[blackbird] /chain: ");
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/chain',
@@ -73,8 +73,8 @@ module.exports = function() {
     }          
     ***********************************************/
     function getChainblocks(host, port, last, callback) {
-        console.log("[blackbird] /chain/blocks: " + last);
-        let url = "http://" + host + ":" + port
+        //console.log("[blackbird] /chain/blocks: " + last);
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/chain/blocks/' + last,
@@ -113,8 +113,8 @@ module.exports = function() {
     }
     ***********************************************/
     function getTransaction(host, port, uuid, callback) {
-        console.log("[blackbird] /chain/blocks: ");
-        let url = "http://" + host + ":" + port
+        //console.log("[blackbird] /transactions: ");
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/transactios/' + uuid,
@@ -140,6 +140,7 @@ module.exports = function() {
      * My version for monitor_blockheight -ibc
      **************************/
     function getListenner(host, port) {
+        let deployed = false
         /*Fetching blockchain data*/
         setInterval(function() {
             getChain(host, port, function(chain) {
@@ -153,10 +154,10 @@ module.exports = function() {
 
                         getTransaction(host, port, stats.transactions[0].uuid, function(err, data) {
                             if (!deployed) {
-                                console.log("\n get_transaction " + JSON.stringify(blockdata));
+                                console.log("\n *___* deployment block: " + JSON.stringify(blockdata));
                                 getDeploymentBlock(chain, stats, data);
                                 deployed = true;
-                            } if (!err) {
+                            } else if (!err) {
                                 blockdata.type = data.type;
                                 blockdata.created = data.timestamp.seconds;
                             }
@@ -167,7 +168,7 @@ module.exports = function() {
 
         }, 5000);
 
-        var getDeploymentBlock = function(chain, stats, data) {
+        function getDeploymentBlock(chain, stats, data) {
             chaincode.currentBlockHash = chain.currentBlockHash;
             chaincode.height = chain.height;
             chaincode.uuid = data.uuid;
@@ -188,7 +189,7 @@ module.exports = function() {
 }
 
 module.exports.chaincode = function() {
-    console.log(`getting deployment info`);
+    console.log("getting deployment info: " + JSON.stringify(chaincode));
     return chaincode;
 }
 

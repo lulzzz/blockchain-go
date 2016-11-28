@@ -20,9 +20,8 @@ app.get('/', function(req, res) {
 });
 
 app.post('/request', function(req, res) {
-    console.log(JSON.stringify(req.body));
-    console.log(`handling ${req.body.user}'s request`);
     if (req.body !== null && req.body !== undefined) {
+        //console.log("handling " + JSON.stringify(req.body) + "'s request");
         rest.action(req.body, res);
     } else {
         res.send('invalid request');
