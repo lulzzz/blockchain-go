@@ -1,7 +1,7 @@
 'use strict'
 
-let host = '85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com'; //
-let port = '5001'; // port da v0.6 5001
+let host = 'localhost';//'85bb3b41ca464553a212382361ec2989-vp0.us.blockchain.ibm.com'; //
+let port = '7050'; // port da v0.6 5001
 const request = require('request-promise');
 const blockchain = require('../rest/listenner')();
 
@@ -11,7 +11,7 @@ module.exports = function () {
 
     function registrar(user, secret) {
         console.log("/registrar/:");
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/registrar',
@@ -40,7 +40,7 @@ module.exports = function () {
 
     function init() {
         console.log("/init/: " + secureContextId);
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/chaincode',
@@ -85,7 +85,7 @@ module.exports = function () {
 
     function init_asset(params, callback) {
         console.log("/init_asset/:");
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -123,7 +123,7 @@ module.exports = function () {
 
     function set_user(params, callback) {
         console.log("/set_user/: " + params.temperature);
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -162,7 +162,7 @@ module.exports = function () {
 
     function read(params, callback) {
         console.log(`/reading/: ${params}`);
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/chaincode',

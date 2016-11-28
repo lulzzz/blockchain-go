@@ -21,7 +21,7 @@ module.exports = function() {
     ***********************************************/
     function getChain(host, port, callback) {
         // console.log("[blackbird] /chain: ");
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/chain',
@@ -74,7 +74,7 @@ module.exports = function() {
     ***********************************************/
     function getChainblocks(host, port, last, callback) {
         //console.log("[blackbird] /chain/blocks: " + last);
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/chain/blocks/' + last,
@@ -114,7 +114,7 @@ module.exports = function() {
     ***********************************************/
     function getTransaction(host, port, uuid, callback) {
         //console.log("[blackbird] /transactions: ");
-        let url = "https://" + host + ":" + port
+        let url = "http://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/transactios/' + uuid,
