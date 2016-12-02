@@ -10,7 +10,7 @@
 const request = require('request-promise');
 var blockdata = {}, chaincode = {};
 
-module.exports = function() {
+module.exports = function () {
 
     /**********************************************
     * returns:{
@@ -31,10 +31,10 @@ module.exports = function() {
             }
         };
 
-        request(options).then(function(response) {
+        request(options).then(function (response) {
             console.log(`[success] chain() `);
             return callback(JSON.parse(response));
-        }).catch(function(err) {
+        }).catch(function (err) {
             if (err) {
                 console.log("[err] error getting chain()");
                 return err;
@@ -84,10 +84,10 @@ module.exports = function() {
             }
         };
 
-        request(options).then(function(response) {
+        request(options).then(function (response) {
             console.log(`[success] chainblocks()`);
             return callback(JSON.parse(response));
-        }).catch(function(err) {
+        }).catch(function (err) {
             if (err) {
                 console.log("[err] error getting chainblocks()");
                 return err;
@@ -124,10 +124,10 @@ module.exports = function() {
             }
         };
 
-        request(options).then(function(response) {
+        request(options).then(function (response) {
             console.log(`[success] transactions()`);
             return callback(JSON.parse(response));
-        }).catch(function(err) {
+        }).catch(function (err) {
             if (err) {
                 console.log("[err] error getting transactions()");
                 return err;
@@ -139,20 +139,20 @@ module.exports = function() {
      * Calls each function sync
      * My version for monitor_blockheight -ibc
      **************************/
-    function getListenner(host, port) {
+    function getListener(host, port) {
         let deployed = false
         /*Fetching blockchain data*/
-        setInterval(function() {
-            getChain(host, port, function(chain) {
+        setInterval(function () {
+            getChain(host, port, function (chain) {
                 blockdata.currentBlockHash = chain.currentBlockHash;
                 blockdata.height = chain.height;
 
-                getChainblocks(host, port, chain.height - 1, function(err, stats) {
+                getChainblocks(host, port, chain.height - 1, function (err, stats) {
                     if (!err) {
                         blockdata.uuid = stats.transactions[0].uuid;
                         blockdata.consensusMetadata = stats.consensusMetadata;
 
-                        getTransaction(host, port, stats.transactions[0].uuid, function(err, data) {
+                        getTransaction(host, port, stats.transactions[0].uuid, function (err, data) {
                             if (!deployed) {
                                 console.log("\n *___* deployment block: " + JSON.stringify(blockdata));
                                 getDeploymentBlock(chain, stats, data);
@@ -183,17 +183,17 @@ module.exports = function() {
         getChain,
         getChainblocks,
         getTransaction,
-        getListenner
+        getListener
     }
     return rest;
 }
 
-module.exports.chaincode = function() {
+module.exports.chaincode = function () {
     console.log("getting deployment info: " + JSON.stringify(chaincode));
     return chaincode;
 }
 
-module.exports.blockdata = function() {
+module.exports.blockdata = function () {
     console.log(`getting blocks data`);
     return blockdata;
 }

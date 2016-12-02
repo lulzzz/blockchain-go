@@ -45,7 +45,7 @@ var playerSet = [
 //---------------------//----------------------------//----------------//
 
 /*{@Object data}
- *On ready callback controls all the elements and order on tracking
+ *On ready callback controls all the elements and the tracking order
 **/
 $(document).ready(function () {
 

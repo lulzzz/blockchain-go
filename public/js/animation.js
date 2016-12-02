@@ -9,7 +9,7 @@ function getStats() {
         let found = false;
         blocksArray.forEach(function(seekAndDestroy) {
             if (seekAndDestroy.height === data.height) {
-                console.log(`block allready exists ${data.height}`);
+                console.log(`block already exists ${data.height}`);
                 found = true;
                 return;
             }
