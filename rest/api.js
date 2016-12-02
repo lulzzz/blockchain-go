@@ -28,7 +28,7 @@ module.exports = function () {
         request.post(options).then(function (response) {
             console.log(`getting answers ${response}`);
             secureContextId = user;
-            blockchain.getListenner(host, port);
+            blockchain.getListener(host, port);
             return init();
         }).catch(function (err) {
             if (err) {
@@ -122,7 +122,7 @@ module.exports = function () {
     }
 
     function set_user(params, callback) {
-        console.log("/set_user/: " + params.temperature);
+        console.log("/set_user/: " + JSON.stringify(params.temperature));
         let url = "http://" + host + ":" + port
         var options = {
             "method": 'POST',

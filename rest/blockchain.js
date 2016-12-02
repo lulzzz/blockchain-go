@@ -46,7 +46,7 @@ function chainInteraction(request, callback) {
             request.temperature], function(err, res) {
                 if (!err) {
                     setTimeout(function() {
-                        console.log(`set_user in ${request}`);
+                        console.log("set_user in ${request.temperature} " + JSON.stringify(request));
                         return reading(request.description, callback);
                     }, 5000);
                 }
