@@ -36,8 +36,8 @@ setTimeout(function () {
         res.send(blockchain);
     });
 
+    let genesis = require('./rest/listenner').deployed();
     app.get('/genesis', function (req, res) {
-        let genesis = require('./rest/listenner').deployed();
         res.send(genesis);
     });
 }, 3000);

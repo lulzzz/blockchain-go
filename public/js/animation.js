@@ -4,9 +4,9 @@ let space = 32, currentPayload;
 let blocksArray = [];
 
 function getStats() {
-    $.get('/blockchain', function(data) {
+    $.get('/blockchain', function (data) {
         let found = false;
-        blocksArray.forEach(function(seekAndDestroy) {
+        blocksArray.forEach(function (seekAndDestroy) {
             if (seekAndDestroy.height === data.height) {
                 console.log(`block allready exists ${data.height}`);
                 found = true;
@@ -20,7 +20,7 @@ function getStats() {
             console.log("data.height: " + data.height + "last \n" + JSON.stringify(payloadHistory[payloadHistory.length - 1].height));
             block = block + 1;
             $(".animationDiv").append("<div id='box" + block + "' class='block'>" + data.height + "</div>");
-            $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function() {
+            $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
                 $('.lastblock').removeClass('lastblock');
                 if (appendToHistory.temperature > 24) { //appendToHistory.status === true && 
                     console.log(`getStats - status(return): ${appendToHistory.status} && ${appendToHistory.temperature}`);
@@ -43,11 +43,11 @@ function sendBlocks(payload) {
 }
 
 function getDeploymentBlock() {
-    $.get('/genesis', function(deployed) {
+    $.get('/genesis', function (deployed) {
         blocksArray.push(deployed);
         block = block + 1;
         $(".animationDiv").append("<div id='firstBlockBox'class='block'>" + deployed.height + "</div>");
-        $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function() {
+        $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
             $('.lastblock').removeClass('lastblock');
             $('.block:last').addClass('lastblock');
         });
@@ -56,10 +56,10 @@ function getDeploymentBlock() {
 }
 
 
-$(document).on('mouseover', '.block', function(event) {
+$(document).on('mouseover', '.block', function (event) {
     let height = Number($(this).html());
     console.log(`let height = Number($(this).html() ${height}`);
-    payloadHistory.forEach(function(dataHistory) {
+    payloadHistory.forEach(function (dataHistory) {
         //console.log("dataHistory " + JSON.stringify(dataHistory));
         if (dataHistory.height === height) {
             currentPayload = dataHistory;
@@ -68,7 +68,7 @@ $(document).on('mouseover', '.block', function(event) {
     show_details(event, height, currentPayload);
 });
 
-$(document).on('mouseleave', '.block', function() {
+$(document).on('mouseleave', '.block', function () {
     $('#details').fadeOut();
 });
 
@@ -76,7 +76,7 @@ $(document).on('mouseleave', '.block', function() {
 function show_details(event, id, message) {
     let currentBlock;
     var left;
-    blocksArray.forEach(function(current) {
+    blocksArray.forEach(function (current) {
         if (current.height === id) {
             currentBlock = current;
             //console.log(currentBlock.height + " || " + id + " || " + message.height);
@@ -109,7 +109,7 @@ function formatDate(date, fmt) {
     function pad(value) {
         return (value.toString().length < 2) ? '0' + value : value;
     }
-    return fmt.replace(/%([a-zA-Z])/g, function(_, fmtCode) {
+    return fmt.replace(/%([a-zA-Z])/g, function (_, fmtCode) {
         var tmp;
         switch (fmtCode) {
             case 'Y':								//Year

@@ -32,11 +32,11 @@ module.exports = function () {
         };
 
         request(options).then(function (response) {
-            console.log(`[success] chain() `);
+            console.log(`[success] getChain() `);
             return callback(JSON.parse(response));
         }).catch(function (err) {
             if (err) {
-                console.log("[err] error getting chain()");
+                console.log("[err] error getChain()");
                 return err;
             }
         });
@@ -84,14 +84,13 @@ module.exports = function () {
             }
         };
 
-        request(options).then(function (response) {
-            console.log(`[success] chainblocks()`);
-            return callback(JSON.parse(response));
+        request(options).then(function (response, err) {
+            console.log(`[success] getChainblocks()`);
+            return callback(null, JSON.parse(response));
         }).catch(function (err) {
-            if (err) {
-                console.log("[err] error getting chainblocks()");
-                return err;
-            }
+            console.log("[err] error getChainblocks() " + err);
+            return err;
+
         });
     }
 
@@ -117,7 +116,7 @@ module.exports = function () {
         let url = "http://" + host + ":" + port
         var options = {
             "method": 'GET',
-            "url": url + '/transactios/' + uuid,
+            "url": url + '/transactions/' + uuid,
             "headers": {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -125,13 +124,11 @@ module.exports = function () {
         };
 
         request(options).then(function (response) {
-            console.log(`[success] transactions()`);
-            return callback(JSON.parse(response));
+            console.log(`[success] getTransaction()`);
+            return callback(null, JSON.parse(response));
         }).catch(function (err) {
-            if (err) {
-                console.log("[err] error getting transactions()");
-                return err;
-            }
+            console.log("[err] error getTransaction() " + err);
+            return err;
         });
     }
 
@@ -144,22 +141,27 @@ module.exports = function () {
         /*Fetching blockchain data*/
         setInterval(function () {
             getChain(host, port, function (chain) {
+                console.log("[listener] getChain() => height: " + chain.height);
                 blockdata.currentBlockHash = chain.currentBlockHash;
                 blockdata.height = chain.height;
-
-                getChainblocks(host, port, chain.height - 1, function (err, stats) {
-                    if (!err) {
-                        blockdata.uuid = stats.transactions[0].uuid;
+                getChainblocks(host, port, blockdata.height - 1, function (err, stats) {
+                    if (stats.transactions) {
+                        blockdata.uuid = stats.transactions[0].txid;
                         blockdata.consensusMetadata = stats.consensusMetadata;
-
-                        getTransaction(host, port, stats.transactions[0].uuid, function (err, data) {
+                        console.log("[listener] getChainblocks() => UUID: " + stats.transactions[0].txid);
+                        getTransaction(host, port, blockdata.uuid, function (err, data) {
+                            console.log("[listener] getTransaction() " + chain.height);
                             if (!deployed) {
-                                console.log("\n *___* deployment block: " + JSON.stringify(blockdata));
+                                data.uuid = blockdata.uuid;
+                                data.created = data.timestamp.seconds;
+                                console.log(` *___* deployment block: ${data}`);
                                 getDeploymentBlock(chain, stats, data);
                                 deployed = true;
                             } else if (!err) {
                                 blockdata.type = data.type;
                                 blockdata.created = data.timestamp.seconds;
+                            } else {
+                                console.log(`[listener] error getTransaction() ${err}`);
                             }
                         });
                     }
@@ -175,6 +177,7 @@ module.exports = function () {
             chaincode.consensusMetadata = data.consensusMetadata;
             chaincode.type = data.type;
             chaincode.created = data.created;
+            console.log("[getDeploymentBlock] " + JSON.stringify(chaincode));
         }
 
     }
@@ -194,6 +197,6 @@ module.exports.deployed = function () {
 }
 
 module.exports.blockdata = function () {
-    console.log(`getting blocks data`);
+    console.log(`getting blocks data ${blockdata}`);
     return blockdata;
 }
