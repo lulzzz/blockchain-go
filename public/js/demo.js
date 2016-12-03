@@ -20,7 +20,8 @@ var map,
     rand = Math.floor((Math.random() * 8000) + 1),
     pack = "Asset Package " + rand,
     now = new Date().toLocaleString(),
-    data = { description: pack, user: "Industry", action: "create", "temperature": temperature, lastTransaction: now };
+    data = { description: pack, user: "Industry", action: "create", temperature: temperature, lastTransaction: now };
+
 
 var defaultCoordinates = [{
     "lat": -23.56996189423875,
@@ -45,7 +46,7 @@ var playerSet = [
 //---------------------//----------------------------//----------------//
 
 /*{@Object data}
- *On ready callback controls all the elements and the tracking order
+ *On ready callback controls all the elements and order on tracking
 **/
 $(document).ready(function () {
 
@@ -84,18 +85,18 @@ $(document).ready(function () {
 
 /*@{Object data} - Rest functions*/
 function doTransaction(action) {
-    console.log("/request " + JSON.stringify(action));
+    //console.log("[doTransaction]request: ${action} " + JSON.stringify(action));
     $.post('/request', action).done(function onSuccess(res) {
         data = res;
-        console.log("response " + JSON.stringify(data));
+        console.log(`[doTransaction]success ${res.description}`);
         if (data.temperature > 24) {
-            //console.log(`doTransaction - status(return): ${data.status}`);
+            console.log(`doTransaction - status(return): ${data.status}`);
             data.status = true;
         }
         payloadHistory.push(data);
         getStats(payloadHistory);
         if (data.status === true && data.user === currentPlayer.getTitle()) {
-            //console.log(`${currentPlayer.getTitle()} = ${data.user}`);
+            console.log(`${currentPlayer.getTitle()} = ${data.user}`);
             heldAccountable = true;
             checkStatus(data);
         } else {
@@ -117,8 +118,8 @@ function checkStatus(context) {
         infowindow.open(map, currentPlayer);
         verifyValue = temperature;
         data.status === false;
-        // console.log(`verifyValue: (checkStatus) ${verifyValue}`);
-        // console.log(`status: (false?) ${data.status}`);
+        console.log(`verifyValue: (checkStatus) ${verifyValue}`);
+        console.log(`status: (false?) ${data.status}`);
         for (var i = 1; i < playerSet.length - 1; i++) {
             if (playerSet[i][0] === currentPlayer.getTitle()) {
                 verifyOwner = playerSet[i][0];
@@ -168,20 +169,22 @@ function playTracking(values) {
         package.temperature = verifyValue
         console.log(`Verifying value ${verifyValue} || infractors?: ${verifyOwner} heldAccountable ${heldAccountable}`);
     }
-    //console.log(`heldAccountable ${heldAccountable}`);
-    //console.log(`status now  ${data.status}`);
+
+    /*console.log(`heldAccountable ${heldAccountable}`);
+      console.log(`status now  ${data.status}`);*/
+
     //update stats window
     checkStatus(package);
     currentPlayer.setPosition(route[steps + 15]);
     //console.log(`steps ${steps}`);
     if (currentLat - nextLat < 0.0000013522 && currentLng - nextLng < 0.0000013522) {
-        //console.log(`count ${count}`);
+        console.log(`count ${count}`);
         currentPlayer = markers[count];
         package.user = currentPlayer.getTitle();
         package.action = "transfer";
 
         //current package's owner
-        //console.log(`interval ${package.user}`);
+        /*console.log(`interval ${package.user}`);*/
 
         //request to server
         doTransaction(package);
@@ -223,7 +226,10 @@ function initMap() {
         suppressMarkers: true
     });
 
-    var mapCenter = new google.maps.LatLng(defaultCoordinates[defaultCoordinates.length - 1].lat, defaultCoordinates[defaultCoordinates.length - 1].lng);
+    var mapCenter = new google.maps.LatLng(
+        defaultCoordinates[defaultCoordinates.length - 1].lat,
+        defaultCoordinates[defaultCoordinates.length - 1].lng);
+
     var mapOptions = {
         center: mapCenter,
         zoom: 14,
@@ -323,13 +329,11 @@ function createAsset(init) {
             $('.modal-dialog').fadeOut("slow");
             $('#myModal').modal('hide');
 
-            //temporary way to append ui elements => update with react,etc;
             assetContainerBody.append('<br><img id="packageImg" src="./images/pallete.png"><br>' +
                 '<h4>Asset created</h4>' +
                 '<br><b>Owner: </b>' + data.user.toUpperCase() +
                 '<br><b>Description: </b>' + data.description +
                 '<br><b>Registered: </b>' + data.lastTransaction);
-            // '<br><b>UUID: </b> ' + data.uuid + '\n');
 
             blockchainInfoDiv.fadeIn("slow");
             animationDiv.fadeIn("slow");
@@ -361,11 +365,11 @@ function finalSummary() {
     let c = 1;
     content.empty();
     content.append('<div class="modal-body fullbody"><h3>Transaction History</h3></div>' +
-        '<div class="modal-footer fullbody">' +
+        '<div class="modal-footer fullbody"><div class="hideModal">Back</div>' +
         '<br><a target="_blank" href="http://solhub.isc.br.ibm.com/">Learn more about our demos</href></div>');
 
     payloadHistory.forEach(function (log) {
-        console.log("generating summary " + JSON.stringify(log));
+        //console.log("generating summary " + JSON.stringify(log));
         $('.modal-body').append('<div class="finalsummary" id="historyLog' + c + '"><strong>Description:\n '
             + log.description + '   User: ' + log.user + ' temperature: ' + log.temperature + ' C.° </strong></div><br>');
 
@@ -381,6 +385,11 @@ function finalSummary() {
     console.log(`modal-fade:`);
     $('.modal-dialog').modal();
     $('#myModal').modal("show");
+
+    $('.hideModal').click(function () {
+        $('.modal-dialog').modal("hide");
+        $('#myModal').modal("hide");
+    });
 }
 
 /*@{Object data} - listenner to blockchain events*/

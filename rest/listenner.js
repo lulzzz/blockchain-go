@@ -1,7 +1,7 @@
 /**************************************
  * Copyright 2016 IBM Corp. All Rights Reserved.
- * this module listen to blockchain events
- * first implementation by Vitor Diego 
+ * This module listen to blockchain events.
+ * First implementation by Vitor Diego 
  * 
  * ************************************/
 
@@ -188,7 +188,7 @@ module.exports = function () {
     return rest;
 }
 
-module.exports.chaincode = function () {
+module.exports.deployed = function () {
     console.log("getting deployment info: " + JSON.stringify(chaincode));
     return chaincode;
 }

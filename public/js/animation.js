@@ -5,11 +5,10 @@ let blocksArray = [];
 
 function getStats() {
     $.get('/blockchain', function(data) {
-        //console.log("blockchain: " + JSON.stringify(data));
         let found = false;
         blocksArray.forEach(function(seekAndDestroy) {
             if (seekAndDestroy.height === data.height) {
-                console.log(`block already exists ${data.height}`);
+                console.log(`block allready exists ${data.height}`);
                 found = true;
                 return;
             }
@@ -45,7 +44,6 @@ function sendBlocks(payload) {
 
 function getDeploymentBlock() {
     $.get('/genesis', function(deployed) {
-        //console.log("genesis: " + JSON.stringify(deployed));
         blocksArray.push(deployed);
         block = block + 1;
         $(".animationDiv").append("<div id='firstBlockBox'class='block'>" + deployed.height + "</div>");
@@ -93,12 +91,14 @@ function show_details(event, id, message) {
     if (left < 0) left = 0;
     var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
     html += '<hr class="line"/><p>Created: &nbsp;' + currentBlock.created + ' UTC</p>';
-    html += '<p> UUID: ' + currentBlock.uuid + '</p>';
+    html += ' UUID: ' + currentBlock.uuid;
     //html += '<p> Type: &nbsp;&nbsp;' + message.type + '</p>';
-    html += '<p> ConsensusMetadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
+    html += '<p> Consensus data:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
     html += '<p> Payload:' + JSON.stringify(message) + '</p>';
     if (message.temperature > 24) {
-        $('#details').addClass("alertDetails");
+        console.log("alert details");
+        $('#details').addClass('alertDetails');
+
     }
     $('#details').html(html).css('left', left).fadeIn();
 

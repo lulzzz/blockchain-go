@@ -1,5 +1,6 @@
-// Place your settings in this file to overwrite default and user settings.
+// Place your settings in this file to overwrite default and user settings. 
+
 {
-    "editor.formatOnSave": true,
-    "typescript.check.workspaceVersion": false
+"editor.formatOnSave":true, 
+"typescript.check.workspaceVersion":false
 }

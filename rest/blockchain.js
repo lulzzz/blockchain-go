@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 /* Copyright 2016 IBM Corp. All Rights Reserved.
- * rest implementation for Blockchain-Go Application
+ * rest implementation for Blockchain-Go demo
  * first implementation by Vitor Diego
 */
 //------------------------------------------------------------------------------
@@ -11,14 +11,16 @@
 let chaincode;
 let response = '';
 
-module.exports.action = function(params, callback) {
+module.exports.action = function (params, callback) {
     chaincode = require('../config/setup').chain();
     return chainInteraction(params, callback);
 }
 
 function chainInteraction(request, callback) {
 
-    console.log(`request from user ${request.action}`);
+    console.log(`[blockchain] request: ${request.action}`);
+    console.log(typeof request);
+    var timeout = 4000;
 
     //return new Promise(function)
     if (request.action === 'create') {
@@ -29,13 +31,12 @@ function chainInteraction(request, callback) {
             request.lastTransaction,
             request.user,
             request.temperature,
-            request.id], function(err, res) {
+            request.id], function (err, res) {
                 if (!err) {
-                    console.log(`init_asset out`);
-                    setTimeout(function() {
-                        console.log(`init_asset in`);
+                    setTimeout(function () {
+                        console.log(`[blockchain] init_asset() => ${request.description}`);
                         return reading(request.description, callback);
-                    }, 5000);
+                    }, timeout);
                 }
             });
     } else if (request.action === 'transfer') {
@@ -43,17 +44,15 @@ function chainInteraction(request, callback) {
         chaincode.invoke.set_user(
             [request.description,
             request.user,
-            request.temperature], function(err, res) {
+            request.temperature], function (err, res) {
                 if (!err) {
-                    setTimeout(function() {
-                        console.log("set_user in ${request.temperature} " + JSON.stringify(request));
+                    setTimeout(function () {
+                        console.log(`[set_user] set_user() => ${request.description}`);
                         return reading(request.description, callback);
-                    }, 5000);
+                    }, timeout);
                 }
             });
     } else if (request.action === 'read') {
-        //chaincode.query
-        console.log(`read%%`);
         return reading(request.description, callback);
     } else {
         response = 'function not listed';
@@ -61,20 +60,19 @@ function chainInteraction(request, callback) {
     }
 }
 
-let reading = function queryRead(description, callback) {
-
-    chaincode.query.read([description], function(err, res) {
-        if (!err) response = res;
+let reading = function query(description, callback) {
+    chaincode.query.read([description], function (err, res) {
+        if (!err) response = JSON.parse(res);
         //("merchant_id" in thisSession)==false
         if (response === undefined) {
             console.log(`invoking recursive resource`);
-            reading(description, callback);
+            query(description, callback);
             return;
         }
-        //after need to delete from blockchain response
+        //console.log(vars`Variables: ${{foo, bar, baz}}`);
         delete response.id;
-        console.log(`blockchain.js ${response}`);
-        callback.send(JSON.parse(response));
+        console.log(`[blockchain] read() => ${response.result.message}`);
+        callback.send(JSON.parse(response.result.message));
     });
 }
 
@@ -84,7 +82,8 @@ let reading = function queryRead(description, callback) {
 function makeid() {
     var text = "";
     var possible = "0123456789";
-    for (var i = 0; i < 10; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    for (var i = 0; i < 10; i++) {
+        text += + possible.charAt(Math.floor(Math.random() * possible.length));
+    }
     return text;
 }

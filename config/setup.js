@@ -8,35 +8,35 @@
 
 //loads environment variables for blockchain setup (USA server - blockchain-go)
 //const env = require('../env/env.json'); //env.json(for usa servers)
-const env = require('../env/local_env.json'); 
-const api = require('../rest/api.js'); 
-console.log(`getting environment variables \n $ {env.peers[0].api_port_tls}`); 
-const peers = env.peers; 
-const users = env.users; 
-var chaincode; 
+const env = require('../env/local_env.json');
+const api = require('../rest/api.js');
+console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
+const peers = env.peers;
+const users = env.users;
+var chaincode;
 
 function runNetwork() {
 
     //index of users[] to be registered
-    let x = 0; 
-    let rest = api(); 
-    let admin =  {user:env.users[x].enrollId, secret:env.users[x].enrollSecret }; 
+    let x = 0;
+    let rest = api();
+    let admin = { user: env.users[x].enrollId, secret: env.users[x].enrollSecret };
 
-    let getRegistrar = function(req) {
-        rest.invoke.registrar(req.user, req.secret); 
-        chaincode = rest; 
+    let getRegistrar = function (req) {
+        rest.invoke.registrar(req.user, req.secret);
+        chaincode = rest;
     }
 
-    getRegistrar(admin); 
+    getRegistrar(admin);
 
 }
 
 
-module.exports.chain = function() {
-    console.log(`chaincode $ {chaincode}`); 
-    return chaincode; 
-}; 
+module.exports.chain = function () {
+    console.log(`chaincode ${chaincode}`);
+    return chaincode;
+};
 
-module.exports.startNetwork = function() {
-    return runNetwork(); 
+module.exports.startNetwork = function () {
+    return runNetwork();
 }
