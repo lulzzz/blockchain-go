@@ -170,6 +170,10 @@ module.exports = function() {
 
         }, 5000);
 
+        /***************************************
+        * @returns Object{} - deployment block
+        * Holding deployment info
+        **************************************/
         function getDeploymentBlock(chain, stats, data) {
             chaincode.currentBlockHash = chain.currentBlockHash;
             chaincode.height = chain.height;
@@ -192,11 +196,9 @@ module.exports = function() {
 }
 
 module.exports.deployed = function() {
-    console.log("getting deployment info: " + JSON.stringify(chaincode));
     return chaincode;
 }
 
 module.exports.blockdata = function() {
-    console.log(`getting blocks data ${blockdata}`);
     return blockdata;
 }

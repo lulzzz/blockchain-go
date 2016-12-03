@@ -6,7 +6,6 @@
 
 'use strict'
 
-//const express = require('express');
 const app = require('./config/express')();
 const rest = require('./rest/blockchain');
 const start = require('./config/setup').startNetwork();
@@ -28,19 +27,25 @@ app.post('/request', function(req, res) {
     }
 });
 
-//temporary way(without using routes)
+//temporary way(without routes)
 setTimeout(function() {
-
+    let deploy = 0;
     app.get('/blockchain', function(req, res) {
         let blockchain = require('./rest/listenner').blockdata();
+        if (deploy < 1) {
+            console.log(`isInit ${deploy}`);
+            blockchain.isInit = true;
+            deploy = 1;
+        }
         res.send(blockchain);
     });
 
     let genesis = require('./rest/listenner').deployed();
     app.get('/genesis', function(req, res) {
+        genesis.isDeploy = true;
         res.send(genesis);
     });
-}, 3000);
+}, 10000);
 
 // start server on the specified port and binding host appEnv.port
 app.listen(appEnv.port, '0.0.0.0', function() {

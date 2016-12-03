@@ -4,9 +4,9 @@ let space = 32, currentPayload;
 let blocksArray = [];
 
 function getStats() {
-    $.get('/blockchain', function (data) {
+    $.get('/blockchain', function(data) {
         let found = false;
-        blocksArray.forEach(function (seekAndDestroy) {
+        blocksArray.forEach(function(seekAndDestroy) {
             if (seekAndDestroy.height === data.height) {
                 console.log(`block allready exists ${data.height}`);
                 found = true;
@@ -17,10 +17,10 @@ function getStats() {
             blocksArray.push(data);
             let appendToHistory = payloadHistory[payloadHistory.length - 1];
             appendToHistory.height = data.height;
-            console.log("data.height: " + data.height + "last \n" + JSON.stringify(payloadHistory[payloadHistory.length - 1].height));
+            //console.log("data.height: " + data.height + "last \n" + JSON.stringify(payloadHistory[payloadHistory.length - 1].height));
             block = block + 1;
             $(".animationDiv").append("<div id='box" + block + "' class='block'>" + data.height + "</div>");
-            $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
+            $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function() {
                 $('.lastblock').removeClass('lastblock');
                 if (appendToHistory.temperature > 24) { //appendToHistory.status === true && 
                     console.log(`getStats - status(return): ${appendToHistory.status} && ${appendToHistory.temperature}`);
@@ -43,11 +43,12 @@ function sendBlocks(payload) {
 }
 
 function getDeploymentBlock() {
-    $.get('/genesis', function (deployed) {
+    $.get('/genesis', function(deployed) {
         blocksArray.push(deployed);
+        payloadHistory.push(deployed);
         block = block + 1;
         $(".animationDiv").append("<div id='firstBlockBox'class='block'>" + deployed.height + "</div>");
-        $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function () {
+        $('.block:last').animate({ opacity: 1, left: (block * space) }, 1000, function() {
             $('.lastblock').removeClass('lastblock');
             $('.block:last').addClass('lastblock');
         });
@@ -56,10 +57,10 @@ function getDeploymentBlock() {
 }
 
 
-$(document).on('mouseover', '.block', function (event) {
+$(document).on('mouseover', '.block', function(event) {
     let height = Number($(this).html());
-    console.log(`let height = Number($(this).html() ${height}`);
-    payloadHistory.forEach(function (dataHistory) {
+    //console.log(`let height = Number($(this).html() ${height}`);
+    payloadHistory.forEach(function(dataHistory) {
         //console.log("dataHistory " + JSON.stringify(dataHistory));
         if (dataHistory.height === height) {
             currentPayload = dataHistory;
@@ -68,33 +69,48 @@ $(document).on('mouseover', '.block', function (event) {
     show_details(event, height, currentPayload);
 });
 
-$(document).on('mouseleave', '.block', function () {
+$(document).on('mouseleave', '.block', function() {
     $('#details').fadeOut();
 });
 
 //Missing payload info
 function show_details(event, id, message) {
     let currentBlock;
-    var left;
-    blocksArray.forEach(function (current) {
+    var left, html, deploy = false;
+    blocksArray.forEach(function(current) {
         if (current.height === id) {
             currentBlock = current;
-            //console.log(currentBlock.height + " || " + id + " || " + message.height);
+            //console.log(currentBlock.height + " || " + id + " || " + message.height + " all " + JSON.stringify(currentBlock));
         }
-        if (id !== message.height) {
+        if (message.isDeploy) {
             message = { "deployment": "first block!", "created": message.lastTransaction }
+            currentBlock.consensusMetadata = "genesis";
+            deploy = true;
+        } else if (message.isInit) {
+            console.log(`isInit: ${message.isInit}`);
+            message.action = "init";
         }
     });
 
     left = event.pageX - $('#details').parent().offset().left - 120;
-    //formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p')
+
     if (left < 0) left = 0;
-    var html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
-    html += '<hr class="line"/><p>Created: &nbsp;' + currentBlock.created + ' UTC</p>';
-    html += ' UUID: ' + currentBlock.uuid;
+    html = '<p class="blckLegend"> Ledger Block Height: ' + currentBlock.height + '</p>';
+    html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(currentBlock.created * 1000, '%M-%d-%Y %I:%m%p') + '</p>';
+    html += ' UUID: &nbsp;&nbsp;&nbsp' + currentBlock.uuid.slice(0, 17);
     //html += '<p> Type: &nbsp;&nbsp;' + message.type + '</p>';
-    html += '<p> Consensus data:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
-    html += '<p> Payload:' + JSON.stringify(message) + '</p>';
+    html += '<p> Consensus Metadata:  &nbsp;&nbsp;&nbsp;&nbsp;' + currentBlock.consensusMetadata + '</p>';
+    if (!deploy) {
+        if (message.action === undefined) {
+            message.action = "update";
+        }
+        html += ' Action: &nbsp;&nbsp;&nbsp;&nbsp' + message.action + '<br/>';
+        html += ' Description: &nbsp;&nbsp;&nbsp;&nbsp' + message.description + '<br/>';
+        html += ' Owner: &nbsp;&nbsp;&nbsp;&nbsp' + message.user + '<br/>';
+        html += ' Temperature: &nbsp;&nbsp;&nbsp;&nbsp' + message.temperature + ' C.°<br/>';
+    } else {
+        html += ' Payload:' + JSON.stringify(message) + '<br/>';
+    }
     if (message.temperature > 24) {
         console.log("alert details");
         $('#details').addClass('alertDetails');
@@ -109,7 +125,7 @@ function formatDate(date, fmt) {
     function pad(value) {
         return (value.toString().length < 2) ? '0' + value : value;
     }
-    return fmt.replace(/%([a-zA-Z])/g, function (_, fmtCode) {
+    return fmt.replace(/%([a-zA-Z])/g, function(_, fmtCode) {
         var tmp;
         switch (fmtCode) {
             case 'Y':								//Year

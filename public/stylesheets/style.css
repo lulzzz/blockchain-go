@@ -225,8 +225,8 @@ body .modal-dialog img {
   background: #222832;
   color: #2EB9D6;
   display: none;
-  position: absolute;
-  top: -400%;
+  position: relative;
+  top: -410%;
   width: 270px;
   min-width: 130px;
   min-height: 80px;
@@ -247,7 +247,7 @@ body .modal-dialog img {
   text-align: center;
   position: absolute;
   top: 5%;
-  left: 100%;
+  left: 110%;
   height: 90%;
   width: 62px;
   border-radius: 4px;
