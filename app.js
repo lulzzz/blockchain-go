@@ -15,11 +15,11 @@ const appEnv = cfenv.getAppEnv();
 //const start = require('./config/ibm-blockchain.js').startNetwork();
 //const start = require('./config/hyperledgerfc.js').startNetwork();
 
-app.get('/', function (req, res) {
-    res.render("index.html");
+app.get('/', function(req, res) {
+    res.render("index");
 });
 
-app.post('/request', function (req, res) {
+app.post('/request', function(req, res) {
     if (req.body !== null && req.body !== undefined) {
         console.log(`[app] handling request: ${req}`);
         rest.action(req.body, res);
@@ -29,21 +29,21 @@ app.post('/request', function (req, res) {
 });
 
 //temporary way(without using routes)
-setTimeout(function () {
+setTimeout(function() {
 
-    app.get('/blockchain', function (req, res) {
+    app.get('/blockchain', function(req, res) {
         let blockchain = require('./rest/listenner').blockdata();
         res.send(blockchain);
     });
 
     let genesis = require('./rest/listenner').deployed();
-    app.get('/genesis', function (req, res) {
+    app.get('/genesis', function(req, res) {
         res.send(genesis);
     });
 }, 3000);
 
 // start server on the specified port and binding host appEnv.port
-app.listen(appEnv.port, '0.0.0.0', function () {
+app.listen(appEnv.port, '0.0.0.0', function() {
     // print a message when the server starts listening
     console.log("server starting on " + appEnv.url);
 });

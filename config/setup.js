@@ -7,8 +7,8 @@
 'use strict'
 
 //loads environment variables for blockchain setup (USA server - blockchain-go)
-//const env = require('../env/env.json'); //env.json(for usa servers)
-const env = require('../env/local_env.json');
+const env = require('../env/env.json'); //env.json(for usa servers)
+//const env = require('../env/local_env.json');
 const api = require('../rest/api.js');
 console.log(`getting environment variables \n ${env.peers[0].api_port_tls}`);
 const peers = env.peers;
@@ -18,8 +18,8 @@ var chaincode;
 function runNetwork() {
 
     //index of users[] to be registered
-    let x = 0;
-    let rest = api();
+    let x = 4;
+    let rest = api(peers[0].api_host, peers[0].api_port_tls);
     let admin = { user: env.users[x].enrollId, secret: env.users[x].enrollSecret };
 
     let getRegistrar = function (req) {

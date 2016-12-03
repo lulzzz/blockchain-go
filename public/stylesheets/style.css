@@ -8,6 +8,12 @@ html, body {
   height: 100%;
 }
 
+.hideModal {
+  position: absolute;
+  cursor: pointer;
+  left: 5%;
+}
+
 #introBlockChain {
   text-align: center;
 }
@@ -183,19 +189,6 @@ body .modal-dialog img {
   color: red;
 }
 
-.alertDetails {
-  background: #222832;
-  color: darkorange;
-  display: none;
-  position: absolute;
-  top: -510%;
-  width: 270px;
-  border-radius: 10px;
-  padding: 15px 30px;
-  word-break: break-all;
-  font-size: 12px;
-}
-
 .animationDiv {
   position: absolute;
   width: 70%;
@@ -210,6 +203,22 @@ body .modal-dialog img {
   border-top-left-radius: 10px;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+.alertDetails {
+  background: #222832;
+  color: darkorange;
+  display: none;
+  position: absolute;
+  top: -400%;
+  width: 270px;
+  min-width: 130px;
+  min-height: 80px;
+  max-height: 350px;
+  border-radius: 10px;
+  padding: 15px 30px;
+  word-break: break-all;
+  font-size: 12px;
 }
 
 #details {

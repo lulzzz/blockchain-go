@@ -5,18 +5,16 @@
  * ************************************/
 'use strict'
 
-let host = 'localhost';
-let port = '7050';
 const request = require('request-promise');
 const blockchain = require('../rest/listenner')();
 
-module.exports = function () {
+module.exports = function (host, port) {
 
     var chaincodeId, secureContextId;
 
     function registrar(user, secret) {
         console.log(`registrar() =>`);
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/registrar',
@@ -45,7 +43,7 @@ module.exports = function () {
 
     function init() {
         console.log(`init() =>`);
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             //"method": 'POST',
             "url": url + '/chaincode',
@@ -90,7 +88,7 @@ module.exports = function () {
 
     function init_asset(params, callback) {
         console.log(`init_asset() =>`);
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -128,7 +126,7 @@ module.exports = function () {
 
     function set_user(params, callback) {
         console.log(`set_user() =>`);
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',
@@ -168,7 +166,7 @@ module.exports = function () {
     function read(params, callback) {
         console.log(`[api] read() => ${params}`);
         //params = ["Asset Package 18"];
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'POST',
             "url": url + '/chaincode',

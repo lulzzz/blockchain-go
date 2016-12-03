@@ -10,7 +10,7 @@
 const request = require('request-promise');
 var blockdata = {}, chaincode = {};
 
-module.exports = function () {
+module.exports = function() {
 
     /**********************************************
     * returns:{
@@ -21,7 +21,7 @@ module.exports = function () {
     ***********************************************/
     function getChain(host, port, callback) {
         // console.log("[blackbird] /chain: ");
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/chain',
@@ -31,10 +31,10 @@ module.exports = function () {
             }
         };
 
-        request(options).then(function (response) {
+        request(options).then(function(response) {
             console.log(`[success] getChain() `);
             return callback(JSON.parse(response));
-        }).catch(function (err) {
+        }).catch(function(err) {
             if (err) {
                 console.log("[err] error getChain()");
                 return err;
@@ -74,7 +74,7 @@ module.exports = function () {
     ***********************************************/
     function getChainblocks(host, port, last, callback) {
         //console.log("[blackbird] /chain/blocks: " + last);
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/chain/blocks/' + last,
@@ -84,10 +84,10 @@ module.exports = function () {
             }
         };
 
-        request(options).then(function (response, err) {
+        request(options).then(function(response, err) {
             console.log(`[success] getChainblocks()`);
             return callback(null, JSON.parse(response));
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.log("[err] error getChainblocks() " + err);
             return err;
 
@@ -113,7 +113,7 @@ module.exports = function () {
     ***********************************************/
     function getTransaction(host, port, uuid, callback) {
         //console.log("[blackbird] /transactions: ");
-        let url = "http://" + host + ":" + port
+        let url = "https://" + host + ":" + port
         var options = {
             "method": 'GET',
             "url": url + '/transactions/' + uuid,
@@ -123,10 +123,10 @@ module.exports = function () {
             }
         };
 
-        request(options).then(function (response) {
+        request(options).then(function(response) {
             console.log(`[success] getTransaction()`);
             return callback(null, JSON.parse(response));
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.log("[err] error getTransaction() " + err);
             return err;
         });
@@ -139,17 +139,17 @@ module.exports = function () {
     function getListener(host, port) {
         let deployed = false
         /*Fetching blockchain data*/
-        setInterval(function () {
-            getChain(host, port, function (chain) {
+        setInterval(function() {
+            getChain(host, port, function(chain) {
                 console.log("[listener] getChain() => height: " + chain.height);
                 blockdata.currentBlockHash = chain.currentBlockHash;
                 blockdata.height = chain.height;
-                getChainblocks(host, port, blockdata.height - 1, function (err, stats) {
+                getChainblocks(host, port, blockdata.height - 1, function(err, stats) {
                     if (stats.transactions) {
                         blockdata.uuid = stats.transactions[0].txid;
                         blockdata.consensusMetadata = stats.consensusMetadata;
                         console.log("[listener] getChainblocks() => UUID: " + stats.transactions[0].txid);
-                        getTransaction(host, port, blockdata.uuid, function (err, data) {
+                        getTransaction(host, port, blockdata.uuid, function(err, data) {
                             console.log("[listener] getTransaction() " + chain.height);
                             if (!deployed) {
                                 data.uuid = blockdata.uuid;
@@ -191,12 +191,12 @@ module.exports = function () {
     return rest;
 }
 
-module.exports.deployed = function () {
+module.exports.deployed = function() {
     console.log("getting deployment info: " + JSON.stringify(chaincode));
     return chaincode;
 }
 
-module.exports.blockdata = function () {
+module.exports.blockdata = function() {
     console.log(`getting blocks data ${blockdata}`);
     return blockdata;
 }
