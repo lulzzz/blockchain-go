@@ -42,8 +42,8 @@ interested developers a sense of your cadence and upcoming enhancements.
            => sla implementations(deadlines,etc)
            => final summary with multiple infractors;
 
-#fix zoom and delay on animations [];
-#put maps api into external file [];
+#fix zoom and delay on animations [ok];
+#put maps api into external file [ok];
 
 #References in blockchain learning files
 #Questions about consensus...
@@ -54,8 +54,8 @@ interested developers a sense of your cadence and upcoming enhancements.
 -Letter of credit example(*);
 -What the key point between hyperledger x blockchain business;
 
-Vitor, isso é ótimo pq faz parte dos nossos objetivos de Checkpoint para 4Q.
+"Vitor, isso é ótimo pq faz parte dos nossos objetivos de Checkpoint para 4Q.
 
 Peço que na demo fique mais didático o que se passa na Blockchain em termos da 
 criação do documento inicial, as modificações causadas pelo Chaincode, as modificações 
-causadas no próprio Blockchain pelo Chaincode e, se possível, o processo de Consensus.
+causadas no próprio Blockchain pelo Chaincode e, se possível, o processo de Consensus."

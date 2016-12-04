@@ -48,32 +48,32 @@ var playerSet = [
 /*{@Object data}
  *On ready callback controls all the elements and order on tracking
 **/
-$(document).ready(function() {
+$(document).ready(function () {
 
     $('#myModal').modal('show');
 
     /*@{Object data} creates an asset triggering createAsset & doTransaction*/
-    $('.btn-primary').click(function() {
+    $('.btn-primary').click(function () {
         currentPlayer = markers[0];
         getDeploymentBlock();
         createAsset(data);
     });
 
-    $('#startDemo').click(function() {
+    $('#startDemo').click(function () {
         $(".assetContainer").fadeOut("slow");
         setupTracking();
         seePackage();
         $(this).fadeOut();
     });
 
-    $("#btnUpTemp").click(function() {
+    $("#btnUpTemp").click(function () {
         temperature++;
         data.temperature = temperature;
         $("#lblTemperature").text(`${temperature} ºC`);
         console.log(data.temperature);
     });
 
-    $("#btnDownTemp").click(function() {
+    $("#btnDownTemp").click(function () {
         temperature--;
         data.temperature = temperature;
         $("#lblTemperature").text(`${temperature} ºC`);
@@ -143,15 +143,15 @@ function setupTracking() {
     });
 
     infowindow.open(map, currentPlayer);
-    trigger = setInterval(function() {
+    trigger = setInterval(function () {
         playTracking(data)
     }, 1000);
 
-    trigger$ = setInterval(function() {
+    trigger$ = setInterval(function () {
         sendBlocks(data);
     }, 9000)
     //ensuring it has valid objects
-    markers.forEach(function(icon) {
+    markers.forEach(function (icon) {
         console.log(`marker ${icon.getTitle()}`);
     });
 }
@@ -190,7 +190,7 @@ function playTracking(values) {
         doTransaction(package);
 
         //delay to update all UI elements with the new state 
-        setTimeout(function() {
+        setTimeout(function () {
             $('#currentPlayer').html(currentPlayer.getTitle());
             infowindow.setContent(package.user + " is shipping assets");
             infowindow.open(map, currentPlayer);
@@ -260,7 +260,7 @@ function setMarkers(map) {
             draggable: false
         });
         markers.push(marker);
-        marker.addListener('dragend', function() {
+        marker.addListener('dragend', function () {
             let player = this.getTitle();
             for (var y in playerSet) {
                 if (playerSet[y][0] === player) {
@@ -290,7 +290,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         waypoints: waypts,
         optimizeWaypoints: true,
         travelMode: google.maps.TravelMode.DRIVING
-    }, function(data, status) {
+    }, function (data, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             //preserveViewport: true => solved the zoom issue
             directionsDisplay.setOptions({ preserveViewport: true });
@@ -322,7 +322,7 @@ function createAsset(init) {
     let assetContainer = $('.assetContainer');
     let btnStart = $('assetContainerBody button');
 
-    setTimeout(function() {
+    setTimeout(function () {
         if (data !== null && data !== undefined) {
 
             $('.modal-backdrop').fadeOut();
@@ -350,11 +350,11 @@ function createAsset(init) {
 }
 
 function seePackage() {
-    $("#showPackage").mouseover(function() {
+    $("#showPackage").mouseover(function () {
         $(".assetContainer").fadeIn("slow");
     });
 
-    $("#showPackage").mouseout(function() {
+    $("#showPackage").mouseout(function () {
         $(".assetContainer").fadeOut("slow");
     });
 }
@@ -368,7 +368,7 @@ function finalSummary() {
         '<div class="modal-footer fullbody"><div class="hideModal">Back</div>' +
         '<br><a target="_blank" href="http://solhub.isc.br.ibm.com/">Learn more about our demos</href></div>');
 
-    payloadHistory.forEach(function(log) {
+    payloadHistory.forEach(function (log) {
         //console.log("generating summary " + JSON.stringify(log));
         if (log.description !== undefined) {
             $('.modal-body').append('<div class="finalsummary" id="historyLog' + c + '"><strong>Description:\n '
@@ -383,12 +383,12 @@ function finalSummary() {
         }
     });
 
-    //showing final history
+    //showing final summary
     console.log(`modal-fade:`);
     $('.modal-dialog').modal();
     $('#myModal').modal("show");
 
-    $('.hideModal').click(function() {
+    $('.hideModal').click(function () {
         $('.modal-dialog').modal("hide");
         $('#myModal').modal("hide");
     });
@@ -397,7 +397,10 @@ function finalSummary() {
 /*@{Object data} - listenner to blockchain events*/
 function statsEventListenner(context) {
     let currenTime = new Date().toLocaleString();
-    console.log(`temp changing: ${context.temperature}`);
+    console.log(`temp changing: ${context.temperature} || ${temperature}`);
+    if (context.temperature !== temperature) {
+        context.temperature = temperature;
+    }
     $("#lblTemperature").text(`${temperature} ºC`);
     $("#lblTime").text(`${currenTime}`);
     $("#lastTransactionTime").text(`${context.lastTransaction}`);

@@ -83,7 +83,7 @@ function show_details(event, id, message) {
             //console.log(currentBlock.height + " || " + id + " || " + message.height + " all " + JSON.stringify(currentBlock));
         }
         if (message.isDeploy) {
-            message = { "deployment": "first block!", "created": message.lastTransaction }
+            message = { deployment: "first block!", created: message.lastTransaction }
             currentBlock.consensusMetadata = "genesis";
             deploy = true;
         } else if (message.isInit) {
@@ -109,7 +109,7 @@ function show_details(event, id, message) {
         html += ' Owner: &nbsp;&nbsp;&nbsp;&nbsp' + message.user + '<br/>';
         html += ' Temperature: &nbsp;&nbsp;&nbsp;&nbsp' + message.temperature + ' C.°<br/>';
     } else {
-        html += ' Payload:' + JSON.stringify(message) + '<br/>';
+        html += ' Payload: <br/> ' + JSON.stringify(message) + '<br/>';
     }
     if (message.temperature > 24) {
         console.log("alert details");
