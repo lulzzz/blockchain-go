@@ -1,61 +1,48 @@
-This README.md file is displayed on your project page. You should edit this 
-file to describe your project, including instructions for building and 
-running the project, pointers to the license under which you are making the 
-project available, and anything else you think would be useful for others to
-know.
+# Blockchain Go Demo
 
-We have created an empty license.txt file for you. Well, actually, it says,
-"<Replace this text with the license you've chosen for your project.>" We 
-recommend you edit this and include text for license terms under which you're
-making your code available. A good resource for open source licenses is the 
-[Open Source Initiative](http://opensource.org/).
+## About Blockchain Go
+- The underlying network for this application is the [Hyperledger Fabric](https://github.com/hyperledger/fabric/tree/master/docs), a Linux Foundation project.  You may want to review these instructions to understand a bit about the Hyperledger Fabric.
+- **This demo purpose is to basically aid to any people to comprehend about how a blockchain network can be addressed into an existing business process model.**
+- **This demo uses Hyperledger Fabric v0.6 (Not supported anymore in bluemix).**
 
-Be sure to update your project's profile with a short description and 
-eye-catching graphic.
+# Application Background
 
-Finally, consider defining some sprints and work items in Track & Plan to give 
-interested developers a sense of your cadence and upcoming enhancements.
+We have three companies whose handles the same package (asset) through their supply chains and, all of those agreed to comply with terms and rules
+to handle that asset.
+
+The challenge is on ensuring the integrity of these package through all the supply chain process, since it's hard to tell accuaratelly who's the responsible party real time, but we have a solution!
+
+![](/docs/intro.png)
+
+First we create a new package for transport and eventual transfers:
+
+![](/docs/creatingAsset.png)
+
+So we have a "smart contract" adhered by all the participants companies (Industry, Shipping Company and the Customer):
+
+![](/docs/smartcontract.png)
+
+With simulated temperature sensors in our virtual package (We could - and did -  demos with real devices), we're publishing payloads to the subscriber application (You're watching the demo through it ;):
+
+![](/docs/payloads.png)
+
+This application perform requests to the  service that holds communication with our blockchain network:
+
+![](/docs/dashboard.png) ![](/docs/events.png)
+
+As our "Chain Participants" share the visibility about those information, our application notifies all of the participants about the events from the blockchain network:
+
+![](/docs/contractviolated.png)
+
+We have available a immutable history about the transactions from the blockchain ledger:
+
+![](/docs/history.png)
 
 
-#By Agostinho => "Why blockchain?","Why Hyperledger?","Why IBM?"
-#new features:
+Powered by IBM Blockchain
 
-#nodeJs server optimized [ok];
-#demo.js using react.js (fixing great dom manipulation)[failed];
-#easy frontend information about transactions(owners,assets,block_height,etc)[ok];
-#alignment from stats data and blocks(frontend),summary status(final) and MqttClient[ ];  
-{ steps: 
-      (1).open modal-div(fade-in) explaining the context => Industry (ledger's data)-> Shipping Company (ledger's data)-> Final Customer(ledger's data);
-      (2).Explain the Smart Contract => show map,players and create an asset(right div) -> start demo;
-      (3).switch animation flow to 45s;
-      (4).Create blocks animation with { 
-            * Transactions(quantity) - *
-            * UUID(transaction) - getTransaction();
-            * Payload Message - query.read();
-            * Type (action) - getTransaction();
-            * ChaincodeId - getTransaction();
-            * Create date - getTransaction();
-            }
-      (5).enable Smart Contract over IoT real device && fake device
-      (6).final summary;
-}(appends) => IoT control enabled / fake temperature (+ -)
-           => sla implementations(deadlines,etc)
-           => final summary with multiple infractors;
+Author: Vitor Diego
+Garagem 1157
 
-#fix zoom and delay on animations [ok];
-#put maps api into external file [ok];
 
-#References in blockchain learning files
-#Questions about consensus...
--with bitcoin and anonymous parties we need to ensure security with a proof of work;
--inside a permissioned network we can decrease significantly this coast(cause every player is known);
--Googles routing codes(banking) example;
--(benefits to supply chain process;
--Letter of credit example(*);
--What the key point between hyperledger x blockchain business;
 
-"Vitor, isso é ótimo pq faz parte dos nossos objetivos de Checkpoint para 4Q.
-
-Peço que na demo fique mais didático o que se passa na Blockchain em termos da 
-criação do documento inicial, as modificações causadas pelo Chaincode, as modificações 
-causadas no próprio Blockchain pelo Chaincode e, se possível, o processo de Consensus."
