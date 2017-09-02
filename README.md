@@ -4,6 +4,7 @@
 - The underlying network for this application is the [Hyperledger Fabric](https://github.com/hyperledger/fabric/tree/master/docs), a Linux Foundation project.  You may want to review these instructions to understand a bit about the Hyperledger Fabric.
 - **This demo purpose is to basically aid to any people to comprehend about how a blockchain network can be addressed into an existing business process model.**
 - **This demo uses Hyperledger Fabric v0.6 (Not supported anymore in bluemix).**
+- demo: https://blockchain-go.mybluemix.net/
 
 # Application Background
 
