@@ -42,7 +42,6 @@ We have available a immutable history about the transactions from the blockchain
 Powered by IBM Blockchain
 
 Author: Vitor Diego
-Garagem 1157
-
+- IBM Garage São Paulo
 
 
