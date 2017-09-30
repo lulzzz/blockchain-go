@@ -35,7 +35,7 @@ As our "Chain Participants" share the visibility about those information, our ap
 
 ![](/docs/contractviolated.png)
 
-We have available a immutable history about the transactions from the blockchain ledger:
+We have available an immutable history about the transactions from the blockchain ledger:
 
 ![](/docs/history.png)
 
