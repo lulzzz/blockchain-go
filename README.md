@@ -4,7 +4,6 @@
 - The underlying network for this application is the [Hyperledger Fabric](https://github.com/hyperledger/fabric/tree/master/docs), a Linux Foundation project.  You may want to review these instructions to understand a bit about the Hyperledger Fabric.
 - **This demo purpose is to basically aid to any people to comprehend about how a blockchain network can be addressed into an existing business process model.**
 - **This demo uses Hyperledger Fabric v0.6 (Not supported anymore in bluemix).**
-- demo: https://blockchain-go.mybluemix.net/
 
 # Application Background
 
@@ -23,7 +22,7 @@ So we have a "smart contract" adhered by all the participants companies (Industr
 
 ![](/docs/smartcontract.png)
 
-With simulated temperature sensors in our virtual package (We could - and did -  demos with real devices), we're publishing payloads to the subscriber application (You're watching the demo through it ;):
+With simulated temperature sensors in our virtual package (We could - and did so -  demos with real devices), we're publishing payloads to the subscriber application (You're watching the demo through it ;):
 
 ![](/docs/payloads.png)
 
